@@ -1,0 +1,495 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="WorkspaceDefinition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="WorkspaceType"/>
+        <xs:element type="xs:string" name="Version"/>
+        <xs:element name="Domains">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Domain" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="DomainName"/>
+                    <xs:element type="xs:string" name="FieldType"/>
+                    <xs:element type="xs:string" name="MergePolicy"/>
+                    <xs:element type="xs:string" name="SplitPolicy"/>
+                    <xs:element type="xs:string" name="Description"/>
+                    <xs:element type="xs:string" name="Owner"/>
+                    <xs:element name="CodedValues">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CodedValue" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="Name"/>
+                                <xs:element type="xs:string" name="Code"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DatasetDefinitions">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DataElement" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="CatalogPath"/>
+                    <xs:element type="xs:string" name="Name"/>
+                    <xs:element type="xs:string" name="MetadataRetrieved"/>
+                    <xs:element name="Metadata">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="XmlDoc"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="DatasetType"/>
+                    <xs:element type="xs:byte" name="DSID"/>
+                    <xs:element type="xs:string" name="Versioned"/>
+                    <xs:element type="xs:string" name="CanVersion"/>
+                    <xs:element type="xs:string" name="ConfigurationKeyword"/>
+                    <xs:element type="xs:string" name="HasOID"/>
+                    <xs:element type="xs:string" name="OIDFieldName"/>
+                    <xs:element name="Fields">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="FieldArray">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Field" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                      <xs:element type="xs:string" name="Name"/>
+                                      <xs:element type="xs:string" name="Type"/>
+                                      <xs:element type="xs:string" name="IsNullable"/>
+                                      <xs:element type="xs:short" name="Length"/>
+                                      <xs:element type="xs:byte" name="Precision"/>
+                                      <xs:element type="xs:byte" name="Scale"/>
+                                      <xs:element type="xs:string" name="AliasName"/>
+                                      <xs:element type="xs:string" name="Required"/>
+                                      <xs:element type="xs:string" name="Editable"/>
+                                      <xs:element name="GeometryDef">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:byte" name="AvgNumPoints"/>
+                                            <xs:element type="xs:string" name="GeometryType"/>
+                                            <xs:element type="xs:string" name="HasM"/>
+                                            <xs:element type="xs:string" name="HasZ"/>
+                                            <xs:element name="SpatialReference">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element type="xs:string" name="WKT"/>
+                                                  <xs:element type="xs:short" name="XOrigin"/>
+                                                  <xs:element type="xs:short" name="YOrigin"/>
+                                                  <xs:element type="xs:float" name="XYScale"/>
+                                                  <xs:element type="xs:byte" name="ZOrigin"/>
+                                                  <xs:element type="xs:byte" name="ZScale"/>
+                                                  <xs:element type="xs:byte" name="MOrigin"/>
+                                                  <xs:element type="xs:byte" name="MScale"/>
+                                                  <xs:element type="xs:float" name="XYTolerance"/>
+                                                  <xs:element type="xs:float" name="ZTolerance"/>
+                                                  <xs:element type="xs:float" name="MTolerance"/>
+                                                  <xs:element type="xs:string" name="HighPrecision"/>
+                                                  <xs:element type="xs:short" name="LeftLongitude"/>
+                                                  <xs:element type="xs:short" name="WKID"/>
+                                                  <xs:element type="xs:short" name="LatestWKID"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element type="xs:float" name="GridSize0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element type="xs:string" name="ModelName"/>
+                                      <xs:element name="Domain">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="DomainName"/>
+                                            <xs:element type="xs:string" name="FieldType"/>
+                                            <xs:element type="xs:string" name="MergePolicy"/>
+                                            <xs:element type="xs:string" name="SplitPolicy"/>
+                                            <xs:element type="xs:string" name="Description"/>
+                                            <xs:element type="xs:string" name="Owner"/>
+                                            <xs:element name="CodedValues">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="CodedValue" maxOccurs="unbounded" minOccurs="0">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element type="xs:string" name="Name"/>
+                                                        <xs:element type="xs:string" name="Code"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element type="xs:byte" name="DefaultValue"/>
+                                      <xs:element type="xs:string" name="DomainFixed"/>
+                                    </xs:choice>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Indexes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="IndexArray">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Index" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="Name"/>
+                                      <xs:element type="xs:string" name="IsUnique"/>
+                                      <xs:element type="xs:string" name="IsAscending"/>
+                                      <xs:element name="Fields">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="FieldArray">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="Field">
+                                                    <xs:complexType>
+                                                      <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                                        <xs:element type="xs:string" name="Name"/>
+                                                        <xs:element type="xs:string" name="Type"/>
+                                                        <xs:element type="xs:string" name="IsNullable"/>
+                                                        <xs:element type="xs:byte" name="Length"/>
+                                                        <xs:element type="xs:byte" name="Precision"/>
+                                                        <xs:element type="xs:byte" name="Scale"/>
+                                                        <xs:element type="xs:string" name="Required"/>
+                                                        <xs:element type="xs:string" name="Editable"/>
+                                                        <xs:element type="xs:string" name="DomainFixed"/>
+                                                        <xs:element name="GeometryDef">
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:element type="xs:byte" name="AvgNumPoints"/>
+                                                              <xs:element type="xs:string" name="GeometryType"/>
+                                                              <xs:element type="xs:string" name="HasM"/>
+                                                              <xs:element type="xs:string" name="HasZ"/>
+                                                              <xs:element name="SpatialReference">
+                                                                <xs:complexType>
+                                                                  <xs:sequence>
+                                                                    <xs:element type="xs:string" name="WKT"/>
+                                                                    <xs:element type="xs:short" name="XOrigin"/>
+                                                                    <xs:element type="xs:short" name="YOrigin"/>
+                                                                    <xs:element type="xs:float" name="XYScale"/>
+                                                                    <xs:element type="xs:byte" name="ZOrigin"/>
+                                                                    <xs:element type="xs:byte" name="ZScale"/>
+                                                                    <xs:element type="xs:byte" name="MOrigin"/>
+                                                                    <xs:element type="xs:byte" name="MScale"/>
+                                                                    <xs:element type="xs:float" name="XYTolerance"/>
+                                                                    <xs:element type="xs:float" name="ZTolerance"/>
+                                                                    <xs:element type="xs:float" name="MTolerance"/>
+                                                                    <xs:element type="xs:string" name="HighPrecision"/>
+                                                                    <xs:element type="xs:short" name="LeftLongitude"/>
+                                                                    <xs:element type="xs:short" name="WKID"/>
+                                                                    <xs:element type="xs:short" name="LatestWKID"/>
+                                                                  </xs:sequence>
+                                                                </xs:complexType>
+                                                              </xs:element>
+                                                              <xs:element type="xs:float" name="GridSize0"/>
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                        <xs:element type="xs:string" name="AliasName"/>
+                                                        <xs:element type="xs:string" name="ModelName"/>
+                                                      </xs:choice>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="CLSID"/>
+                    <xs:element type="xs:string" name="EXTCLSID"/>
+                    <xs:element type="xs:string" name="RelationshipClassNames"/>
+                    <xs:element type="xs:string" name="AliasName"/>
+                    <xs:element type="xs:string" name="ModelName"/>
+                    <xs:element type="xs:string" name="HasGlobalID"/>
+                    <xs:element type="xs:string" name="GlobalIDFieldName"/>
+                    <xs:element type="xs:string" name="RasterFieldName"/>
+                    <xs:element name="ExtensionProperties">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="PropertyArray"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="SubtypeFieldName"/>
+                    <xs:element type="xs:byte" name="DefaultSubtypeCode"/>
+                    <xs:element name="Subtypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Subtype" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="SubtypeName"/>
+                                <xs:element type="xs:byte" name="SubtypeCode"/>
+                                <xs:element name="FieldInfos">
+                                  <xs:complexType>
+                                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                      <xs:element name="SubtypeFieldInfo">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="FieldName"/>
+                                            <xs:element type="xs:string" name="DomainName"/>
+                                            <xs:element type="xs:string" name="DefaultValue" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:choice>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="ControllerMemberships"/>
+                    <xs:element type="xs:string" name="EditorTrackingEnabled"/>
+                    <xs:element type="xs:string" name="CreatorFieldName"/>
+                    <xs:element type="xs:string" name="CreatedAtFieldName"/>
+                    <xs:element type="xs:string" name="EditorFieldName"/>
+                    <xs:element type="xs:string" name="EditedAtFieldName"/>
+                    <xs:element type="xs:string" name="IsTimeInUTC"/>
+                    <xs:element type="xs:string" name="FeatureType"/>
+                    <xs:element type="xs:string" name="ShapeType"/>
+                    <xs:element type="xs:string" name="ShapeFieldName"/>
+                    <xs:element type="xs:string" name="HasM"/>
+                    <xs:element type="xs:string" name="HasZ"/>
+                    <xs:element type="xs:string" name="HasSpatialIndex"/>
+                    <xs:element type="xs:string" name="AreaFieldName"/>
+                    <xs:element type="xs:string" name="LengthFieldName"/>
+                    <xs:element name="Extent">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:float" name="XMin"/>
+                          <xs:element type="xs:float" name="YMin"/>
+                          <xs:element type="xs:float" name="XMax"/>
+                          <xs:element type="xs:float" name="YMax"/>
+                          <xs:element name="SpatialReference">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="WKT"/>
+                                <xs:element type="xs:short" name="XOrigin"/>
+                                <xs:element type="xs:short" name="YOrigin"/>
+                                <xs:element type="xs:float" name="XYScale"/>
+                                <xs:element type="xs:byte" name="ZOrigin"/>
+                                <xs:element type="xs:byte" name="ZScale"/>
+                                <xs:element type="xs:byte" name="MOrigin"/>
+                                <xs:element type="xs:byte" name="MScale"/>
+                                <xs:element type="xs:float" name="XYTolerance"/>
+                                <xs:element type="xs:float" name="ZTolerance"/>
+                                <xs:element type="xs:float" name="MTolerance"/>
+                                <xs:element type="xs:string" name="HighPrecision"/>
+                                <xs:element type="xs:short" name="LeftLongitude"/>
+                                <xs:element type="xs:short" name="WKID"/>
+                                <xs:element type="xs:short" name="LatestWKID"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpatialReference">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="WKT"/>
+                          <xs:element type="xs:short" name="XOrigin"/>
+                          <xs:element type="xs:short" name="YOrigin"/>
+                          <xs:element type="xs:float" name="XYScale"/>
+                          <xs:element type="xs:byte" name="ZOrigin"/>
+                          <xs:element type="xs:byte" name="ZScale"/>
+                          <xs:element type="xs:byte" name="MOrigin"/>
+                          <xs:element type="xs:byte" name="MScale"/>
+                          <xs:element type="xs:float" name="XYTolerance"/>
+                          <xs:element type="xs:float" name="ZTolerance"/>
+                          <xs:element type="xs:float" name="MTolerance"/>
+                          <xs:element type="xs:string" name="HighPrecision"/>
+                          <xs:element type="xs:short" name="LeftLongitude"/>
+                          <xs:element type="xs:short" name="WKID"/>
+                          <xs:element type="xs:short" name="LatestWKID"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="ChangeTracked"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Metadata">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="XmlDoc"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkspaceData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DatasetData" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="DatasetName"/>
+              <xs:element type="xs:string" name="DatasetType"/>
+              <xs:element name="Data">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Fields">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="FieldArray">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Field" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                      <xs:element type="xs:string" name="Name"/>
+                                      <xs:element type="xs:string" name="Type"/>
+                                      <xs:element type="xs:string" name="IsNullable"/>
+                                      <xs:element type="xs:short" name="Length"/>
+                                      <xs:element type="xs:byte" name="Precision"/>
+                                      <xs:element type="xs:byte" name="Scale"/>
+                                      <xs:element type="xs:string" name="AliasName"/>
+                                      <xs:element type="xs:string" name="Required"/>
+                                      <xs:element type="xs:string" name="Editable"/>
+                                      <xs:element name="GeometryDef">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:byte" name="AvgNumPoints"/>
+                                            <xs:element type="xs:string" name="GeometryType"/>
+                                            <xs:element type="xs:string" name="HasM"/>
+                                            <xs:element type="xs:string" name="HasZ"/>
+                                            <xs:element name="SpatialReference">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element type="xs:string" name="WKT"/>
+                                                  <xs:element type="xs:short" name="XOrigin"/>
+                                                  <xs:element type="xs:short" name="YOrigin"/>
+                                                  <xs:element type="xs:float" name="XYScale"/>
+                                                  <xs:element type="xs:byte" name="ZOrigin"/>
+                                                  <xs:element type="xs:byte" name="ZScale"/>
+                                                  <xs:element type="xs:byte" name="MOrigin"/>
+                                                  <xs:element type="xs:byte" name="MScale"/>
+                                                  <xs:element type="xs:float" name="XYTolerance"/>
+                                                  <xs:element type="xs:float" name="ZTolerance"/>
+                                                  <xs:element type="xs:float" name="MTolerance"/>
+                                                  <xs:element type="xs:string" name="HighPrecision"/>
+                                                  <xs:element type="xs:short" name="LeftLongitude"/>
+                                                  <xs:element type="xs:short" name="WKID"/>
+                                                  <xs:element type="xs:short" name="LatestWKID"/>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element type="xs:float" name="GridSize0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element type="xs:string" name="ModelName"/>
+                                      <xs:element name="Domain">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="DomainName"/>
+                                            <xs:element type="xs:string" name="FieldType"/>
+                                            <xs:element type="xs:string" name="MergePolicy"/>
+                                            <xs:element type="xs:string" name="SplitPolicy"/>
+                                            <xs:element type="xs:string" name="Description"/>
+                                            <xs:element type="xs:string" name="Owner"/>
+                                            <xs:element name="CodedValues">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="CodedValue" maxOccurs="unbounded" minOccurs="0">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element type="xs:string" name="Name"/>
+                                                        <xs:element type="xs:string" name="Code"/>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element type="xs:byte" name="DefaultValue"/>
+                                      <xs:element type="xs:string" name="DomainFixed"/>
+                                    </xs:choice>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Records">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element name="Record" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Values">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Value" maxOccurs="unbounded" minOccurs="0">
+                                        <xs:complexType mixed="true">
+                                          <xs:sequence>
+                                            <xs:element type="xs:string" name="Bytes" minOccurs="0"/>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
