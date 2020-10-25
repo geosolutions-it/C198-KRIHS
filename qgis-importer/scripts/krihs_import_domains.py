@@ -45,13 +45,13 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
         name = domain.getElementsByTagName(TAG_DOMAIN_NAME)[0].childNodes[0].data
         type = domain.getElementsByTagName(TAG_DOMAIN_FIELDTYPE)[0].childNodes[0].data 
         ftype = "VARCHAR(255)"
-        if type=="esriFieldTypeInteger":
-            ftype = "INTEGER"
+        if type != "esriFieldTypeString":
+            ftype = "SMALLINT"
         values = domain.getElementsByTagName(TAG_DOMAIN_CODEDVALUES)[0]
         value_list = values.getElementsByTagName(TAG_DOMAIN_CVALUE)
         sql = ""
         if self.pg_drop_before:
-            sql_drop = "DROP TABLE IF EXISTS %s.%s;" % (self.pg_schema, name.lower())
+            sql_drop = "DROP TABLE IF EXISTS %s.%s CASCADE;" % (self.pg_schema, name.lower())
             sql += sql_drop
         sql_create = "CREATE TABLE %s.%s(name VARCHAR(255), code %s, PRIMARY KEY(code));" % (self.pg_schema, name.lower(), ftype)
         sql += sql_create
@@ -72,7 +72,7 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
         # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
         # overall progress through the model
         self.xml_path = parameters["XMLPATH"]
-        if not self.xml_path.endswith(".xml"):
+        if not self.xml_path.lower().endswith(".xml"):
             feedback = QgsProcessingMultiStepFeedback(0, model_feedback)
             feedback.reportError("XML Workspace Definition is not an XML file!", True)
             return {}
@@ -96,7 +96,6 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
             except Exception as e:
                 feedback.reportError("Error importing domain " + definition[0] + ": " + str(e), False)
             feedback.setCurrentStep(step)
-            pass
         results = {}
         outputs = {}
         return results
