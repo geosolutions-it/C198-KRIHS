@@ -95,15 +95,18 @@ class Field():
             return None
 
     def geom_info(self):
-        ret = { 'type': "POINT", 'dim': 2, 'epsg': 4326 }
+        ret = { 'type': "POINT", 'dim': 2, 'epsg': 4326, 'gtype': 3 }
         g_type = self.geom_def.getElementsByTagName(TAG_DE_GEOM_TYPE)[0].childNodes[0].data
         type == "POINT"
         if g_type=="esriGeometryPolygon":
             ret["type"] = "MULTIPOLYGON"
+            ret["gtype"] = 8
         elif g_type=="esriGeometryPolyline":
             ret["type"] = "MULTILINESTRING"
+            ret["gtype"] = 9
         elif g_type == "esriGeometryMultiPoint":
             ret["type"] = "MULTIPOINT"
+            ret["gtype"] = 7
         g_z = self.geom_def.getElementsByTagName(TAG_DE_GEOM_Z)[0].childNodes[0].data
         g_m = self.geom_def.getElementsByTagName(TAG_DE_GEOM_M)[0].childNodes[0].data
         if g_z == "true":
@@ -159,10 +162,13 @@ class FeatureClass():
         else:
             self.fields.append(field)
 
-    def list_fields(self):
+    def list_fields(self, checkMulti):
         list = ", ".join([f.name.lower() for f in self.get_valid_fields()])
         if self.geom is not None:
-            list += ", geom"
+            if checkMulti is True and self.geom.geom_info()["type"] in ("MULTILINESTRING","MULTIPOLYGON"):
+                list += ", ST_MULTI(geom) as geom"
+            else:
+                list += ", geom"
         return list
         
     def set_subtypes(self, subs):
@@ -295,11 +301,12 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                     fld.geom_def = field.getElementsByTagName(TAG_DE_GEOM_DEF)[0]
                 
                 feature_class.add_field(fld)
-            
+            sql = ""
             if self.pg_drop_before:
-                sql = "DROP TABLE IF EXISTS %s.%s CASCADE;\n" % (self.pg_schema, name) 
+                sql += "DROP TABLE IF EXISTS %s.%s CASCADE;\n" % (self.pg_schema, name) 
+                sql += "DROP TABLE IF EXISTS %s.%s_tmp CASCADE;\n" % (self.pg_schema, name) 
             sql += str(feature_class)
-            return [name, sql, feature_class.list_fields()] 
+            return [name, sql, feature_class.list_fields(False), feature_class.list_fields(True), feature_class.geom.geom_info()["gtype"]] 
         else:
             return None
 
@@ -343,41 +350,92 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                 try:
                     in_layer = self.get_gpkg_vector_layer(definition[0])
                     if in_layer is not None:
-                        alg_params = {
-                            'DATABASE': self.pg_conn_name,
-                            'SQL': definition[1]
-                        }
-                        processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
-                        
-                        # Esporta in PostgreSQL
-                        alg_params = {
-                            'CREATEINDEX': False,
-                            'DATABASE': self.pg_conn_name,
-                            'DROP_STRING_LENGTH': False,
-                            'ENCODING': 'UTF-8',
-                            'FORCE_SINGLEPART': False,
-                            'GEOMETRY_COLUMN': 'geom',
-                            'INPUT': self.get_gpkg_vector_layer(definition[0]),
-                            'LOWERCASE_NAMES': True,
-                            'OVERWRITE': True,
-                            'PRIMARY_KEY': '',
-                            'SCHEMA': self.pg_schema,
-                            'TABLENAME': definition[0].lower() + '_tmp'
-                        }
-                        processing.run('qgis:importintopostgis', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
-                        
-                        #Copy from TMP to FINAL table
-                        sql_copy = "INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s_tmp" % (self.pg_schema, definition[0], definition[2], definition[2], self.pg_schema, definition[0]) + ";"
-                        sql_drop = "DROP TABLE %s.%s_tmp" % (self.pg_schema, definition[0]) + ";"
-                        alg_params = {
-                            'DATABASE': self.pg_conn_name,
-                            'SQL': sql_copy + sql_drop
-                        }
-                        processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
-                        
                         feedback.pushInfo("Feature Class: " + definition[0])
+                        try:
+                            alg_params = {
+                                'DATABASE': self.pg_conn_name,
+                                'SQL': definition[1]
+                            }
+                            feedback.pushInfo("   processing (A) => qgis:postgisexecutesql")
+                            processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                        except Exception as e1:
+                            feedback.reportError("Error creating table definition: \n" + definition[1] + ": " + str(e1), False)
+                            break
+                        
+                        try:
+                            # Esporta in PostgreSQL
+                            #alg_params = {
+                            #    'CREATEINDEX': False,
+                            #    'DATABASE': self.pg_conn_name,
+                            #    'DROP_STRING_LENGTH': True,
+                            #    'ENCODING': 'UTF-8',
+                            #    'FORCE_SINGLEPART': False,
+                            #    'GEOMETRY_COLUMN': 'geom',
+                            #    'INPUT': self.get_gpkg_vector_layer(definition[0]),
+                            #    'LOWERCASE_NAMES': True,
+                            #    'OVERWRITE': True,
+                            #    'PRIMARY_KEY': '',
+                            #    'SCHEMA': self.pg_schema,
+                            #    'TABLENAME': definition[0].lower() + '_tmp'
+                            #}
+                            #feedback.pushInfo("   processing (B) => qgis:importintopostgis")
+                            #processing.run('qgis:importintopostgis', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                            
+                            # Esporta in PostgreSQL (connessioni disponibili)
+                            alg_params = {
+                                'ADDFIELDS': False,
+                                'APPEND': False,
+                                'A_SRS': None,
+                                'CLIP': False,
+                                'DATABASE': self.pg_conn_name,
+                                'DIM': 0,
+                                'GEOCOLUMN': 'geom',
+                                'GT': '',
+                                'GTYPE': definition[4],
+                                'INDEX': False,
+                                'INPUT': self.get_gpkg_vector_layer(definition[0]),
+                                'LAUNDER': False,
+                                'OPTIONS': '',
+                                'OVERWRITE': True,
+                                'PK': '',
+                                'PRECISION': True,
+                                'PRIMARY_KEY': '',
+                                'PROMOTETOMULTI': True,
+                                'SCHEMA': self.pg_schema,
+                                'SEGMENTIZE': '',
+                                'SHAPE_ENCODING': '',
+                                'SIMPLIFY': '',
+                                'SKIPFAILURES': False,
+                                'SPAT': None,
+                                'S_SRS': None,
+                                'TABLE': definition[0].lower() + '_tmp',
+                                'T_SRS': None,
+                                'WHERE': ''
+                            }
+                            feedback.pushInfo("   processing (B) => qgis:importvectorintopostgisdatabaseavailableconnections")
+                            processing.run('gdal:importvectorintopostgisdatabaseavailableconnections', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                        except Exception as e2:
+                            feedback.reportError("Error importing data: \n" + definition[0] + ": " + str(e2), False)
+                            break        
+                
+                        try:
+                            #Copy from TMP to FINAL table
+                            sql_copy = "INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s_tmp" % (self.pg_schema, definition[0], definition[2], definition[3], self.pg_schema, definition[0]) + ";"
+                            sql_drop = "DROP TABLE %s.%s_tmp" % (self.pg_schema, definition[0]) + ";"
+                            alg_params = {
+                                'DATABASE': self.pg_conn_name,
+                                'SQL': sql_copy + sql_drop
+                            }
+                            feedback.pushInfo("   processing (C) => qgis:postgisexecutesql")
+                            processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                        except Exception as e3:
+                            feedback.reportError("Error moving data: \n" + sql_copy + sql_drop + ": " + str(e3), False)
+                            break 
+                            
+                        
+                        
                 except Exception as e:
-                    feedback.reportError("Error importing domain " + definition[0] + ": " + str(e), False)
+                    feedback.reportError("Error importing domain " + definition[1] + ": " + str(e), False)
             feedback.setCurrentStep(step)
         results = {}
         outputs = {}

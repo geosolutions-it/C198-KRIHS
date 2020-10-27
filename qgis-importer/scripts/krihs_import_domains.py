@@ -58,7 +58,10 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
         rows=0
         for cvalue in value_list:
             cvalue_name = cvalue.getElementsByTagName(TAG_DOMAIN_CVALUE_NAME)[0].childNodes[0].data
-            cvalue_code = cvalue.getElementsByTagName(TAG_DOMAIN_CVALUE_CODE)[0].childNodes[0].data  
+            cvalue_code_nodes = cvalue.getElementsByTagName(TAG_DOMAIN_CVALUE_CODE)[0].childNodes
+            cvalue_code = ""
+            if len(cvalue_code_nodes)>0:
+                cvalue_code = cvalue_code_nodes[0].data  
             sql_insert  = "INSERT INTO %s.%s(name, code) VALUES (" % (self.pg_schema, name.lower())
             if type=="esriFieldTypeInteger":
                 sql_insert += "'%s', %s);" % (cvalue_name.replace("'","''"), cvalue_code)
@@ -92,6 +95,7 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
                 }
                 processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                 feedback.pushInfo("Domain: " + definition[0])
+                feedback.pushInfo("   SQL: " + definition[1])
                 feedback.pushInfo("   Rows: " + str(definition[2]))
             except Exception as e:
                 feedback.reportError("Error importing domain " + definition[0] + ": " + str(e), False)
