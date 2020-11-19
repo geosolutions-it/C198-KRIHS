@@ -1,8 +1,6 @@
 """
-Model exported as python.
 Name : modello
-Group : 
-With QGIS : 31202
+Group :
 """
 from xml.dom.minidom import parse
 from qgis.core import QgsProcessing
@@ -42,11 +40,15 @@ TAG_DE_GEOM_M = "HasM"
 TAG_DE_GEOM_SPATIAL_REF = "SpatialReference"
 TAG_DE_GEOM_WKID = "WKID"
 
-#https://doc.arcgis.com/en/insights/latest/get-started/supported-types-from-databases.htm
-#https://www.postgresqltutorial.com/postgresql-data-types/
-class Field():
 
+class Field:
+    """
+    This class map the ESRI definition of a field and allows us to convert into a PostGIS data type
+    """
     def __init__(self):
+        """
+        Constructor
+        """
         self.domain = None
         self.name = None
         self.type = None
@@ -59,49 +61,70 @@ class Field():
         self.serial = False
 
     def is_valid(self):
+        """
+        Returns if the field is valid
+        :return:
+        """
         if self.name is not None and self.to_pg_type() is not None:
-            if self.name.lower() not in ('shape_length','shape_area','globalid'):
+            if self.name.lower() not in ('shape_length', 'shape_area', 'globalid'):
                 return True
         return False
 
     def is_geometry(self):
+        """
+        Returns if it is a geometry field
+        :return:
+        """
         return self.name.lower() == 'shape' and self.type == "esriFieldTypeGeometry"
 
     def to_pg_type(self):
+        """
+        Convert the ESRI field to a PostgreSQL definition
+        :return:
+        """
         if self.type == "esriFieldTypeSmallInteger": 
             return "SMALLINT"
-        elif self.type=="esriFieldTypeInteger":
+        elif self.type == "esriFieldTypeInteger":
             return "INTEGER"
         elif self.type in ("esriFieldTypeDouble", "esriFieldTypeSingle"):    
-            if self.precision==0 and self.scale==0:        
-                if self.type=="esriFieldTypeDouble":
+            if self.precision == 0 and self.scale == 0:
+                if self.type == "esriFieldTypeDouble":
                     return "DOUBLE PRECISION"
-                elif self.type=="esriFieldTypeSingle":    
+                elif self.type == "esriFieldTypeSingle":
                     return "REAL"
             else:
                 return "NUMERIC(%s, %s)" % (str(self.precision), str(self.scale))
-        elif self.type=="esriFieldTypeString":
+        elif self.type == "esriFieldTypeString":
             leng = 255
             if self.length is not None:
                 leng = self.length
             return "VARCHAR(%s)" % (str(leng),)
-        elif self.type=="esriFieldTypeDate":
+        elif self.type == "esriFieldTypeDate":
             return "TIMESTAMP"
-        elif self.type=="esriFieldTypeOID":
+        elif self.type == "esriFieldTypeOID":
             return "BIGINT"
-        elif self.type=="esriFieldTypeGlobalID":
+        elif self.type == "esriFieldTypeGlobalID":
             return "VARCHAR(32)"
         else:
             return None
 
     def geom_info(self):
-        ret = { 'type': "POINT", 'dim': 2, 'epsg': 4326, 'gtype': 3 }
+        """
+        Return the geometry definition as dictionary with the following keys:
+        - type: geometry type
+        - dim: dimension of the geometry (2, 3 or 4)
+        - epsg: EPSG of the geometry field
+        - gtype: geometry type value as expected by the qgis:importvectorintopostgisdatabaseavailableconnections
+        algorithm
+        :return:
+        """
+        ret = {'type': "POINT", 'dim': 2, 'epsg': 4326, 'gtype': 3}
         g_type = self.geom_def.getElementsByTagName(TAG_DE_GEOM_TYPE)[0].childNodes[0].data
         type == "POINT"
-        if g_type=="esriGeometryPolygon":
+        if g_type == "esriGeometryPolygon":
             ret["type"] = "MULTIPOLYGON"
             ret["gtype"] = 8
-        elif g_type=="esriGeometryPolyline":
+        elif g_type == "esriGeometryPolyline":
             ret["type"] = "MULTILINESTRING"
             ret["gtype"] = 9
         elif g_type == "esriGeometryMultiPoint":
@@ -118,9 +141,17 @@ class Field():
         return ret
 
     def has_domain(self):
+        """
+        Returns if the field has an associated domain
+        :return:
+        """
         return self.domain is not None
 
-    def __str__(self):        
+    def __str__(self):
+        """
+        String representation of the object
+        :return:
+        """
         if self.serial:
             sql = self.name.lower() + " SERIAL"
         else:        
@@ -129,7 +160,7 @@ class Field():
                 s_null = "NULL"
             s_default = ""
             if self.default is not None:
-                if self.type=="esriFieldTypeString":
+                if self.type == "esriFieldTypeString":
                     s_default = "DEFAULT '%s'" % (self.default.replace("'", "''"),)
                 else:
                     s_default = "DEFAULT %s" % (self.default,)
@@ -137,13 +168,23 @@ class Field():
         return sql
 
 
-class FeatureClass():
-    
-    def __init__(self, name, oid = None, sub_type=None, sub_type_default = None, schema='public'):
+class FeatureClass:
+    """
+    This class map the ESRI definition of a Feature Class and allows us to convert into a PostGIS Table
+    """
+    def __init__(self, name, oid=None, sub_type=None, sub_type_default=None, schema='public'):
+        """
+        Constructor
+        :param name: name of the feature class
+        :param oid: oid of the feature class
+        :param sub_type: name of the field used to define subtypes in the feature class
+        :param sub_type_default: default value for the subtype field
+        :param schema: name of the destination schema
+        """
         self.schema = schema
         self.name = name
         self.oid = oid
-        if sub_type=='':
+        if sub_type == '':
             sub_type = None
             sub_type_default = None
         self.sub_type = sub_type
@@ -153,6 +194,11 @@ class FeatureClass():
         self.subtypes = []    
     
     def add_field(self, field):
+        """
+        Add a field into the fields list
+        :param field: field to add
+        :return:
+        """
         if field.name == self.sub_type:
             field.default = self.sub_type_default
         if self.oid is not None and field.name.lower() == self.oid.lower():
@@ -162,16 +208,26 @@ class FeatureClass():
         else:
             self.fields.append(field)
 
-    def list_fields(self, checkMulti):
-        list = ", ".join([f.name.lower() for f in self.get_valid_fields()])
+    def list_fields(self, check_multi):
+        """
+        return a comma separated list with the name of the fields
+        :param check_multi: if we have to check for MULTI geometry and then force the output
+        :return:
+        """
+        f_list = ", ".join([f.name.lower() for f in self.get_valid_fields()])
         if self.geom is not None:
-            if checkMulti is True and self.geom.geom_info()["type"] in ("MULTILINESTRING","MULTIPOLYGON"):
-                list += ", ST_MULTI(geom) as geom"
+            if check_multi is True and self.geom.geom_info()["type"] in ("MULTILINESTRING", "MULTIPOLYGON"):
+                f_list += ", ST_MULTI(geom) as geom"
             else:
-                list += ", geom"
-        return list
+                f_list += ", geom"
+        return f_list
         
     def set_subtypes(self, subs):
+        """
+        set the subtype definition from the xml dom node
+        :param subs: dome node containing the definition of the subtype for the feature class
+        :return:
+        """
         for sub in subs:
             name = sub.getElementsByTagName("SubtypeName")[0].childNodes[0].data
             code = sub.getElementsByTagName("SubtypeCode")[0].childNodes[0].data
@@ -191,6 +247,10 @@ class FeatureClass():
             })
         
     def get_valid_fields(self):
+        """
+        return an array with just the valid fields
+        :return:
+        """
         v_fields = []
         for f in self.fields:
             if f.is_valid():
@@ -198,6 +258,10 @@ class FeatureClass():
         return v_fields
         
     def get_domain_fields(self):
+        """
+        returns an array with just the fields with associated domains
+        :return:
+        """
         v_fields = []
         for f in self.fields:
             if f.is_valid() and f.domain is not None:
@@ -205,11 +269,20 @@ class FeatureClass():
         return v_fields    
         
     def is_valid(self):
+        """
+        Returns if the feature class can be considered valid.
+        A feature class is valid if it contains at least 1 field and 1 geometry field
+        :return:
+        """
         if len(self.fields) > 0 and self.geom is not None:
             return True
         return False
 
     def __str__(self):
+        """
+        Returns the string representation of the object as SQL statements
+        :return:
+        """
         table_name = self.schema.lower() + "." + self.name.lower()
         sql = "CREATE TABLE %s(\n   " % (table_name)
         sql += ",\n   ".join([str(f) for f in self.get_valid_fields()])
@@ -245,8 +318,19 @@ class FeatureClass():
 
 
 class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
-
+    """
+    Algorithm to define and import feature classes from geopackage and EXRI Xml Workspace definition into PostGIS
+    """
     def initAlgorithm(self, config=None):
+        """
+        Initialize the algorithm.
+        It accepts the following parameters (via QGIS processing):
+        - XMLPATH: path to the Xml Workspace definition of the geodatabase (for the geopackage to import)
+        - GPKGPATH: path to the geopakcge to import
+        - DBNAME: name of the database as defined in QGIS PG connection (default is 'KRIHS')
+        - SCHEMA: name of the destination schema (default is 'public')
+        - DROPIFEXISTS: name of the destination schema (default is 'public')
+        """
         self.addParameter(QgsProcessingParameterString('XMLPATH', 'XML Workspace Definition', multiLine=False, defaultValue=''))
         self.addParameter(QgsProcessingParameterString('GPKGPATH', 'GeoPackage', multiLine=False, defaultValue=''))
         self.addParameter(QgsProcessingParameterString('DBNAME', 'Pg Connection Name', multiLine=False, defaultValue='KRIHS'))
@@ -254,6 +338,10 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterBoolean('DROPIFEXISTS', 'Drop if exists', optional=True, defaultValue=True))
 
     def getDatasets(self):
+        """
+        Returns the datasets from the XML workspace definition
+        :return:
+        """
         DOMTree = xml.dom.minidom.parse(self.xml_path)
         collection = DOMTree.documentElement
         wrkDef = collection.getElementsByTagName(TAG_WORKSPACE_DEF)[0]
@@ -262,6 +350,11 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         return dataset_list
 
     def getDatasetDef(self, data_element):
+        """
+        Return the dataset definition from the dataset dom node
+        :param data_element: dom node representing the dataset
+        :return:
+        """
         type = data_element.getElementsByTagName(TAG_DE_TYPE)[0].childNodes[0].data
         subtypes = data_element.getElementsByTagName(TAG_DE_SUBTYPE)
         subtype = None
@@ -325,6 +418,13 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         return layer
 
     def processAlgorithm(self, parameters, context, model_feedback):
+        """
+        Process the algorithm
+        :param parameters: parameters of the process
+        :param context: context of the process
+        :param model_feedback: feedback instance for the process
+        :return:
+        """
         # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
         # overall progress through the model
         self.xml_path = parameters["XMLPATH"]
@@ -344,7 +444,7 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         feedback = QgsProcessingMultiStepFeedback(1+len(dataset_list), model_feedback)        
         step=0
         for dataset in dataset_list:
-            step+=1
+            step += 1
             definition = self.getDatasetDef(dataset)
             if definition is not None:
                 try:
@@ -357,30 +457,13 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                                 'SQL': definition[1]
                             }
                             feedback.pushInfo("   processing (A) => qgis:postgisexecutesql")
-                            processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                            processing.run('qgis:postgisexecutesql',
+                                           alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                         except Exception as e1:
                             feedback.reportError("Error creating table definition: \n" + definition[1] + ": " + str(e1), False)
                             break
                         
                         try:
-                            # Esporta in PostgreSQL
-                            #alg_params = {
-                            #    'CREATEINDEX': False,
-                            #    'DATABASE': self.pg_conn_name,
-                            #    'DROP_STRING_LENGTH': True,
-                            #    'ENCODING': 'UTF-8',
-                            #    'FORCE_SINGLEPART': False,
-                            #    'GEOMETRY_COLUMN': 'geom',
-                            #    'INPUT': self.get_gpkg_vector_layer(definition[0]),
-                            #    'LOWERCASE_NAMES': True,
-                            #    'OVERWRITE': True,
-                            #    'PRIMARY_KEY': '',
-                            #    'SCHEMA': self.pg_schema,
-                            #    'TABLENAME': definition[0].lower() + '_tmp'
-                            #}
-                            #feedback.pushInfo("   processing (B) => qgis:importintopostgis")
-                            #processing.run('qgis:importintopostgis', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
-                            
                             # Esporta in PostgreSQL (connessioni disponibili)
                             alg_params = {
                                 'ADDFIELDS': False,
@@ -430,10 +513,7 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                             processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                         except Exception as e3:
                             feedback.reportError("Error moving data: \n" + sql_copy + sql_drop + ": " + str(e3), False)
-                            break 
-                            
-                        
-                        
+                            break    
                 except Exception as e:
                     feedback.reportError("Error importing domain " + definition[1] + ": " + str(e), False)
             feedback.setCurrentStep(step)
@@ -442,16 +522,35 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         return results
 
     def name(self):
+        """
+        Name of the algorithm
+        :return:
+        """
         return 'KhrisXMLFeatureClassesImporterAlgorithm'
 
     def displayName(self):
+        """
+        Name to display for the algorithm in QGIS
+        :return:
+        """
         return 'XML Feature Classes Importer'
 
     def group(self):
+        """
+        Name of the group for this script
+        :return:
+        """
         return 'krihs'
 
     def groupId(self):
+        """
+        Identifier for the group
+        """
         return 'krihs'
 
     def createInstance(self):
+        """
+        Create the algorithm instance
+        :return:
+        """
         return KhrisXMLFeatureClassesImporterAlgorithm()

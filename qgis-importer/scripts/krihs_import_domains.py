@@ -1,8 +1,6 @@
 """
-Model exported as python.
-Name : modello
-Group : 
-With QGIS : 31202
+Name : KhrisXMLDomainsImporterAlgorithm
+Group : krihs
 """
 from xml.dom.minidom import parse
 from qgis.core import QgsProcessing
@@ -26,14 +24,32 @@ TAG_DOMAIN_CVALUE_CODE = "Code"
 
 
 class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
+    """
+    Custom algorithm to import domains table defined in a XML Workspace definition of a ESRI geodatabase
+    into a PostGIS database
+    """
 
     def initAlgorithm(self, config=None):
+        """
+        Initialize the algorithm.
+        It accepts the following parameters (via QGIS processing):
+        - XMLPATH: path to the Xml Workspace definition of the geodatabase (for the geopackage to import)
+        - DBNAME: name of the database as defined in QGIS PG connection (default is 'KRIHS')
+        - SCHEMA: name of the destination schema (default is 'public')
+        - DROPIFEXISTS: name of the destination schema (default is 'public')
+        :param config:
+        :return:
+        """
         self.addParameter(QgsProcessingParameterString('XMLPATH', 'XML Workspace Definition', multiLine=False, defaultValue=''))
         self.addParameter(QgsProcessingParameterString('DBNAME', 'Pg Connection Name', multiLine=False, defaultValue='KRIHS'))
         self.addParameter(QgsProcessingParameterString('SCHEMA', 'Schema', multiLine=False, defaultValue='public'))
         self.addParameter(QgsProcessingParameterBoolean('DROPIFEXISTS', 'Drop if exists', optional=True, defaultValue=True))
 
     def getDomains(self):
+        """
+        Return a list of domains
+        :return:
+        """
         DOMTree = xml.dom.minidom.parse(self.xml_path)
         collection = DOMTree.documentElement
         wrkDef = collection.getElementsByTagName(TAG_WORKSPACE_DEF)[0]
@@ -42,6 +58,14 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
         return domain_list
 
     def getDomainDef(self, domain):
+        """
+        Return the definition of the domain as array with the following information:
+        - [0]: name of the domain
+        - [1]: SQL syntax to define the Domain Table in PostGIS
+        - [2]: number of rows in the domain
+        :param domain: dom node of the domain to analyze
+        :return:
+        """
         name = domain.getElementsByTagName(TAG_DOMAIN_NAME)[0].childNodes[0].data
         type = domain.getElementsByTagName(TAG_DOMAIN_FIELDTYPE)[0].childNodes[0].data 
         ftype = "VARCHAR(255)"
@@ -55,23 +79,30 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
             sql += sql_drop
         sql_create = "CREATE TABLE %s.%s(name VARCHAR(255), code %s, PRIMARY KEY(code));" % (self.pg_schema, name.lower(), ftype)
         sql += sql_create
-        rows=0
+        rows = 0
         for cvalue in value_list:
             cvalue_name = cvalue.getElementsByTagName(TAG_DOMAIN_CVALUE_NAME)[0].childNodes[0].data
             cvalue_code_nodes = cvalue.getElementsByTagName(TAG_DOMAIN_CVALUE_CODE)[0].childNodes
             cvalue_code = ""
             if len(cvalue_code_nodes)>0:
                 cvalue_code = cvalue_code_nodes[0].data  
-            sql_insert  = "INSERT INTO %s.%s(name, code) VALUES (" % (self.pg_schema, name.lower())
-            if type=="esriFieldTypeInteger":
-                sql_insert += "'%s', %s);" % (cvalue_name.replace("'","''"), cvalue_code)
+            sql_insert = "INSERT INTO %s.%s(name, code) VALUES (" % (self.pg_schema, name.lower())
+            if type == "esriFieldTypeInteger":
+                sql_insert += "'%s', %s);" % (cvalue_name.replace("'", "''"), cvalue_code)
             else:
-                sql_insert += "'%s', '%s');" % (cvalue_name.replace("'","''"), cvalue_code.replace("'","''"))
+                sql_insert += "'%s', '%s');" % (cvalue_name.replace("'", "''"), cvalue_code.replace("'", "''"))
             sql += sql_insert
-            rows+=1
+            rows += 1
         return [name, sql, rows] 
 
     def processAlgorithm(self, parameters, context, model_feedback):
+        """
+        Process the algorithm
+        :param parameters: parameters of the process
+        :param context: context of the process
+        :param model_feedback: feedback instance for the process
+        :return:
+        """
         # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
         # overall progress through the model
         self.xml_path = parameters["XMLPATH"]
@@ -93,7 +124,9 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
                     'DATABASE': self.pg_conn_name,
                     'SQL': definition[1]
                 }
-                processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                processing.run(
+                    'qgis:postgisexecutesql',
+                    alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                 feedback.pushInfo("Domain: " + definition[0])
                 feedback.pushInfo("   SQL: " + definition[1])
                 feedback.pushInfo("   Rows: " + str(definition[2]))
@@ -105,16 +138,35 @@ class KhrisXMLDomainsImporterAlgorithm(QgsProcessingAlgorithm):
         return results
 
     def name(self):
+        """
+        Name of the algorithm
+        :return:
+        """
         return 'KhrisXMLDomainsImporterAlgorithm'
 
     def displayName(self):
+        """
+        Name to display for the algorithm in QGIS
+        :return:
+        """
         return 'XML Domains Importer'
 
     def group(self):
+        """
+        Name of the group for this script
+        :return:
+        """
         return 'krihs'
 
     def groupId(self):
+        """
+        Identifier for the group
+        """
         return 'krihs'
 
     def createInstance(self):
+        """
+        Create the algorithm instance
+        :return:
+        """
         return KhrisXMLDomainsImporterAlgorithm()
