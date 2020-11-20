@@ -360,7 +360,7 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         subtype = None
         subtype_def = None
         subs = []
-        if len(subtypes)>0:
+        if len(subtypes) > 0:
             subtype = data_element.getElementsByTagName(TAG_DE_SUBTYPE)[0].childNodes[0].data
             subtype_def = data_element.getElementsByTagName(TAG_DE_SUBTYPE_DEF)[0].childNodes[0].data
             subs = data_element.getElementsByTagName(TAG_DE_SUBTYPES)[0].getElementsByTagName(TAG_DE_SUBTYPES_SUBTYPE)
@@ -442,7 +442,7 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
         self.pg_drop_before = parameters["DROPIFEXISTS"]
         dataset_list = self.getDatasets()
         feedback = QgsProcessingMultiStepFeedback(1+len(dataset_list), model_feedback)        
-        step=0
+        step = 0
         for dataset in dataset_list:
             step += 1
             definition = self.getDatasetDef(dataset)
@@ -513,7 +513,7 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                             processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                         except Exception as e3:
                             feedback.reportError("Error moving data: \n" + sql_copy + sql_drop + ": " + str(e3), False)
-                            break    
+                            break
                 except Exception as e:
                     feedback.reportError("Error importing domain " + definition[1] + ": " + str(e), False)
             feedback.setCurrentStep(step)

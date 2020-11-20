@@ -1,88 +1,147 @@
 <!DOCTYPE model>
 <Option type="Map">
-  <Option type="Map" name="children">
-    <Option type="Map" name="script:KhrisXMLDomainsImporterAlgorithm_1">
-      <Option value="true" type="bool" name="active"/>
+  <Option name="children" type="Map">
+    <Option name="script:GeoServerPublisher_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
       <Option name="alg_config"/>
-      <Option value="script:KhrisXMLDomainsImporterAlgorithm" type="QString" name="alg_id"/>
-      <Option value="XML Domains Importer" type="QString" name="component_description"/>
-      <Option value="147.20000000000002" type="double" name="component_pos_x"/>
-      <Option value="431.1999999999999" type="double" name="component_pos_y"/>
-      <Option name="dependencies"/>
-      <Option value="script:KhrisXMLDomainsImporterAlgorithm_1" type="QString" name="id"/>
+      <Option value="script:GeoServerPublisher" name="alg_id" type="QString"/>
+      <Option value="GeoServer Publisher" name="component_description" type="QString"/>
+      <Option value="520.0000000000001" name="component_pos_x" type="double"/>
+      <Option value="610.4000000000002" name="component_pos_y" type="double"/>
+      <Option name="dependencies" type="StringList">
+        <Option value="script:KhrisXMLFeatureClassesImporterAlgorithm_1" type="QString"/>
+      </Option>
+      <Option value="script:GeoServerPublisher_1" name="id" type="QString"/>
       <Option name="outputs"/>
-      <Option value="true" type="bool" name="outputs_collapsed"/>
-      <Option value="true" type="bool" name="parameters_collapsed"/>
-      <Option type="Map" name="params">
-        <Option type="List" name="DBNAME">
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="DB_NAME" type="List">
           <Option type="Map">
-            <Option value="DBConnectionName" type="QString" name="parameter_name"/>
-            <Option value="0" type="int" name="source"/>
+            <Option value="DBConnectionName" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
-        <Option type="List" name="DROPIFEXISTS">
+        <Option name="GS_ADMIN" type="List">
           <Option type="Map">
-            <Option value="2" type="int" name="source"/>
-            <Option value="true" type="bool" name="static_value"/>
+            <Option value="GSAdminUser" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
-        <Option type="List" name="SCHEMA">
+        <Option name="GS_PASSWORD" type="List">
           <Option type="Map">
-            <Option value="2" type="int" name="source"/>
-            <Option value="public" type="QString" name="static_value"/>
+            <Option value="GSAdminpassword" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
-        <Option type="List" name="XMLPATH">
+        <Option name="GS_REST_URL" type="List">
           <Option type="Map">
-            <Option value="XMLWorkspaceDefinition" type="QString" name="parameter_name"/>
-            <Option value="0" type="int" name="source"/>
+            <Option value="GSReSTaddress" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="GS_STORE" type="List">
+          <Option type="Map">
+            <Option value="GSDataStore" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="GS_WORKSPACE" type="List">
+          <Option type="Map">
+            <Option value="GSWorkspace" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="XML_PATH" type="List">
+          <Option type="Map">
+            <Option value="XMLWorkspaceDefinition" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
       </Option>
     </Option>
-    <Option type="Map" name="script:KhrisXMLFeatureClassesImporterAlgorithm_1">
-      <Option value="true" type="bool" name="active"/>
+    <Option name="script:KhrisXMLDomainsImporterAlgorithm_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
       <Option name="alg_config"/>
-      <Option value="script:KhrisXMLFeatureClassesImporterAlgorithm" type="QString" name="alg_id"/>
-      <Option value="XML Feature Classes Importer" type="QString" name="component_description"/>
-      <Option value="439.19999999999993" type="double" name="component_pos_x"/>
-      <Option value="604" type="double" name="component_pos_y"/>
-      <Option type="StringList" name="dependencies">
+      <Option value="script:KhrisXMLDomainsImporterAlgorithm" name="alg_id" type="QString"/>
+      <Option value="XML Domains Importer" name="component_description" type="QString"/>
+      <Option value="121.60000000000005" name="component_pos_x" type="double"/>
+      <Option value="246.39999999999986" name="component_pos_y" type="double"/>
+      <Option name="dependencies"/>
+      <Option value="script:KhrisXMLDomainsImporterAlgorithm_1" name="id" type="QString"/>
+      <Option name="outputs"/>
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="DBNAME" type="List">
+          <Option type="Map">
+            <Option value="DBConnectionName" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+        <Option name="DROPIFEXISTS" type="List">
+          <Option type="Map">
+            <Option value="2" name="source" type="int"/>
+            <Option value="true" name="static_value" type="bool"/>
+          </Option>
+        </Option>
+        <Option name="SCHEMA" type="List">
+          <Option type="Map">
+            <Option value="2" name="source" type="int"/>
+            <Option value="public" name="static_value" type="QString"/>
+          </Option>
+        </Option>
+        <Option name="XMLPATH" type="List">
+          <Option type="Map">
+            <Option value="XMLWorkspaceDefinition" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:KhrisXMLFeatureClassesImporterAlgorithm_1" type="Map">
+      <Option value="true" name="active" type="bool"/>
+      <Option name="alg_config"/>
+      <Option value="script:KhrisXMLFeatureClassesImporterAlgorithm" name="alg_id" type="QString"/>
+      <Option value="XML Feature Classes Importer" name="component_description" type="QString"/>
+      <Option value="260.79999999999984" name="component_pos_x" type="double"/>
+      <Option value="451.99999999999994" name="component_pos_y" type="double"/>
+      <Option name="dependencies" type="StringList">
         <Option value="script:KhrisXMLDomainsImporterAlgorithm_1" type="QString"/>
       </Option>
-      <Option value="script:KhrisXMLFeatureClassesImporterAlgorithm_1" type="QString" name="id"/>
+      <Option value="script:KhrisXMLFeatureClassesImporterAlgorithm_1" name="id" type="QString"/>
       <Option name="outputs"/>
-      <Option value="true" type="bool" name="outputs_collapsed"/>
-      <Option value="true" type="bool" name="parameters_collapsed"/>
-      <Option type="Map" name="params">
-        <Option type="List" name="DBNAME">
+      <Option value="true" name="outputs_collapsed" type="bool"/>
+      <Option value="true" name="parameters_collapsed" type="bool"/>
+      <Option name="params" type="Map">
+        <Option name="DBNAME" type="List">
           <Option type="Map">
-            <Option value="DBConnectionName" type="QString" name="parameter_name"/>
-            <Option value="0" type="int" name="source"/>
+            <Option value="DBConnectionName" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
-        <Option type="List" name="DROPIFEXISTS">
+        <Option name="DROPIFEXISTS" type="List">
           <Option type="Map">
-            <Option value="2" type="int" name="source"/>
-            <Option value="true" type="bool" name="static_value"/>
+            <Option value="2" name="source" type="int"/>
+            <Option value="true" name="static_value" type="bool"/>
           </Option>
         </Option>
-        <Option type="List" name="GPKGPATH">
+        <Option name="GPKGPATH" type="List">
           <Option type="Map">
-            <Option value="GPKGPath" type="QString" name="parameter_name"/>
-            <Option value="0" type="int" name="source"/>
+            <Option value="GPKGPath" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
-        <Option type="List" name="SCHEMA">
+        <Option name="SCHEMA" type="List">
           <Option type="Map">
-            <Option value="2" type="int" name="source"/>
-            <Option value="public" type="QString" name="static_value"/>
+            <Option value="2" name="source" type="int"/>
+            <Option value="public" name="static_value" type="QString"/>
           </Option>
         </Option>
-        <Option type="List" name="XMLPATH">
+        <Option name="XMLPATH" type="List">
           <Option type="Map">
-            <Option value="XMLWorkspaceDefinition" type="QString" name="parameter_name"/>
-            <Option value="0" type="int" name="source"/>
+            <Option value="XMLWorkspaceDefinition" name="parameter_name" type="QString"/>
+            <Option value="0" name="source" type="int"/>
           </Option>
         </Option>
       </Option>
@@ -90,59 +149,134 @@
   </Option>
   <Option name="help"/>
   <Option name="modelVariables"/>
-  <Option value="krihs" type="QString" name="model_group"/>
-  <Option value="KHRIS DOMAIN IMPORTER" type="QString" name="model_name"/>
-  <Option type="Map" name="parameterDefinitions">
-    <Option type="Map" name="DBConnectionName">
-      <Option value="KRIHS" type="QString" name="default"/>
-      <Option value="DB Connection Name" type="QString" name="description"/>
-      <Option value="0" type="int" name="flags"/>
+  <Option value="krihs" name="model_group" type="QString"/>
+  <Option value="KHRIS IMPORTER" name="model_name" type="QString"/>
+  <Option name="parameterDefinitions" type="Map">
+    <Option name="DBConnectionName" type="Map">
+      <Option value="KRIHS" name="default" type="QString"/>
+      <Option value="DB Connection Name" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
       <Option name="metadata"/>
-      <Option value="false" type="bool" name="multiline"/>
-      <Option value="DBConnectionName" type="QString" name="name"/>
-      <Option value="string" type="QString" name="parameter_type"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="DBConnectionName" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
     </Option>
-    <Option type="Map" name="GPKGPath">
-      <Option value="0" type="int" name="behavior"/>
-      <Option type="invalid" name="default"/>
-      <Option value="GPKG Path" type="QString" name="description"/>
-      <Option value="" type="QString" name="extension"/>
-      <Option value="All Files (*.*)" type="QString" name="filefilter"/>
-      <Option value="0" type="int" name="flags"/>
+    <Option name="GPKGPath" type="Map">
+      <Option value="0" name="behavior" type="int"/>
+      <Option name="default" type="invalid"/>
+      <Option value="GPKG Path" name="description" type="QString"/>
+      <Option value="" name="extension" type="QString"/>
+      <Option value="All Files (*.*)" name="filefilter" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
       <Option name="metadata"/>
-      <Option value="GPKGPath" type="QString" name="name"/>
-      <Option value="file" type="QString" name="parameter_type"/>
+      <Option value="GPKGPath" name="name" type="QString"/>
+      <Option value="file" name="parameter_type" type="QString"/>
     </Option>
-    <Option type="Map" name="XMLWorkspaceDefinition">
-      <Option value="0" type="int" name="behavior"/>
-      <Option type="invalid" name="default"/>
-      <Option value="XML Workspace Definition" type="QString" name="description"/>
-      <Option value="" type="QString" name="extension"/>
-      <Option value="All Files (*.*)" type="QString" name="filefilter"/>
-      <Option value="0" type="int" name="flags"/>
+    <Option name="GSAdminUser" type="Map">
+      <Option value="admin" name="default" type="QString"/>
+      <Option value="GS Admin User" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
       <Option name="metadata"/>
-      <Option value="XMLWorkspaceDefinition" type="QString" name="name"/>
-      <Option value="file" type="QString" name="parameter_type"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="GSAdminUser" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="GSAdminpassword" type="Map">
+      <Option value="geoserver" name="default" type="QString"/>
+      <Option value="GS Admin password" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="GSAdminpassword" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="GSDataStore" type="Map">
+      <Option value="" name="default" type="QString"/>
+      <Option value="GS Data Store" name="description" type="QString"/>
+      <Option value="8" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="GSDataStore" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="GSReSTaddress" type="Map">
+      <Option value="http://localhost:8080/geoserver/rest/" name="default" type="QString"/>
+      <Option value="GS ReST address" name="description" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="GSReSTaddress" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="GSWorkspace" type="Map">
+      <Option value="" name="default" type="QString"/>
+      <Option value="GS Workspace" name="description" type="QString"/>
+      <Option value="8" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="false" name="multiline" type="bool"/>
+      <Option value="GSWorkspace" name="name" type="QString"/>
+      <Option value="string" name="parameter_type" type="QString"/>
+    </Option>
+    <Option name="XMLWorkspaceDefinition" type="Map">
+      <Option value="0" name="behavior" type="int"/>
+      <Option name="default" type="invalid"/>
+      <Option value="XML Workspace Definition" name="description" type="QString"/>
+      <Option value="" name="extension" type="QString"/>
+      <Option value="All Files (*.*)" name="filefilter" type="QString"/>
+      <Option value="0" name="flags" type="int"/>
+      <Option name="metadata"/>
+      <Option value="XMLWorkspaceDefinition" name="name" type="QString"/>
+      <Option value="file" name="parameter_type" type="QString"/>
     </Option>
   </Option>
-  <Option type="Map" name="parameters">
-    <Option type="Map" name="DBConnectionName">
-      <Option value="DBConnectionName" type="QString" name="component_description"/>
-      <Option value="250.39999999999995" type="double" name="component_pos_x"/>
-      <Option value="204.7999999999999" type="double" name="component_pos_y"/>
-      <Option value="DBConnectionName" type="QString" name="name"/>
+  <Option name="parameters" type="Map">
+    <Option name="DBConnectionName" type="Map">
+      <Option value="DBConnectionName" name="component_description" type="QString"/>
+      <Option value="163.19999999999993" name="component_pos_x" type="double"/>
+      <Option value="135.1999999999999" name="component_pos_y" type="double"/>
+      <Option value="DBConnectionName" name="name" type="QString"/>
     </Option>
-    <Option type="Map" name="GPKGPath">
-      <Option value="GPKGPath" type="QString" name="component_description"/>
-      <Option value="568.0000000000003" type="double" name="component_pos_x"/>
-      <Option value="417.60000000000014" type="double" name="component_pos_y"/>
-      <Option value="GPKGPath" type="QString" name="name"/>
+    <Option name="GPKGPath" type="Map">
+      <Option value="GPKGPath" name="component_description" type="QString"/>
+      <Option value="344.00000000000034" name="component_pos_x" type="double"/>
+      <Option value="328.00000000000017" name="component_pos_y" type="double"/>
+      <Option value="GPKGPath" name="name" type="QString"/>
     </Option>
-    <Option type="Map" name="XMLWorkspaceDefinition">
-      <Option value="XMLWorkspaceDefinition" type="QString" name="component_description"/>
-      <Option value="515.1999999999998" type="double" name="component_pos_x"/>
-      <Option value="204.00000000000003" type="double" name="component_pos_y"/>
-      <Option value="XMLWorkspaceDefinition" type="QString" name="name"/>
+    <Option name="GSAdminUser" type="Map">
+      <Option value="GSAdminUser" name="component_description" type="QString"/>
+      <Option value="632.8000000000003" name="component_pos_x" type="double"/>
+      <Option value="390.39999999999975" name="component_pos_y" type="double"/>
+      <Option value="GSAdminUser" name="name" type="QString"/>
+    </Option>
+    <Option name="GSAdminpassword" type="Map">
+      <Option value="GSAdminpassword" name="component_description" type="QString"/>
+      <Option value="632.8" name="component_pos_x" type="double"/>
+      <Option value="433.5999999999999" name="component_pos_y" type="double"/>
+      <Option value="GSAdminpassword" name="name" type="QString"/>
+    </Option>
+    <Option name="GSDataStore" type="Map">
+      <Option value="GSDataStore" name="component_description" type="QString"/>
+      <Option value="632.8" name="component_pos_x" type="double"/>
+      <Option value="474.4000000000004" name="component_pos_y" type="double"/>
+      <Option value="GSDataStore" name="name" type="QString"/>
+    </Option>
+    <Option name="GSReSTaddress" type="Map">
+      <Option value="GSReSTaddress" name="component_description" type="QString"/>
+      <Option value="631.9999999999992" name="component_pos_x" type="double"/>
+      <Option value="345.6000000000002" name="component_pos_y" type="double"/>
+      <Option value="GSReSTaddress" name="name" type="QString"/>
+    </Option>
+    <Option name="GSWorkspace" type="Map">
+      <Option value="GSWorkspace" name="component_description" type="QString"/>
+      <Option value="632.8000000000001" name="component_pos_x" type="double"/>
+      <Option value="515.1999999999999" name="component_pos_y" type="double"/>
+      <Option value="GSWorkspace" name="name" type="QString"/>
+    </Option>
+    <Option name="XMLWorkspaceDefinition" type="Map">
+      <Option value="XMLWorkspaceDefinition" name="component_description" type="QString"/>
+      <Option value="463.1999999999997" name="component_pos_x" type="double"/>
+      <Option value="135.20000000000005" name="component_pos_y" type="double"/>
+      <Option value="XMLWorkspaceDefinition" name="name" type="QString"/>
     </Option>
   </Option>
 </Option>

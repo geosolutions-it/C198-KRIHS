@@ -4,6 +4,11 @@
 This project contains models and tools for QGIS (v3.12.2) to import layers and tables into PostGIS from a geopackage 
 and the ESRI xml Workspace definition.
 
+### Dependencies
+- geoserver-restconfig
+
+#### Install geoserver-restconfig
+c:\OSGeo4W64\apps\Python37>python.exe -m pip install geoserver-restconfig
 
 ## Data
 
@@ -21,8 +26,7 @@ Workspace definition of the UNMAP geodatabase
 This folder contains the python scripts used to:
 - create domains tables and load their data
 - create feature classes with subtypes (via declarative partitioning in PG) and load their features
-
-### import_domains.py
+- publish feature to GeoServer via ReST Admin Interface
 
 
 ## Models
