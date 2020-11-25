@@ -151,10 +151,12 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
 
         step = 2
         published_count = 0
+        layer_prefix = "v_"
         for ds_cur in dataset_list:
-            feedback.pushInfo("GeoServer Publish: " + ds_cur["name"] + " (" + ds_cur["srs"] + ")")
+            layer_name = layer_prefix + ds_cur["name"]
+            feedback.pushInfo("GeoServer Publish: " + layer_name + " (" + ds_cur["srs"] + ")")
             try:
-                gs_catalogue.publish_featuretype(ds_cur["name"], store, ds_cur["srs"])
+                gs_catalogue.publish_featuretype(layer_name, store, ds_cur["srs"])
                 published_count += 1
             except Exception as e:
                 feedback.reportError("Error: " + str(e), False)

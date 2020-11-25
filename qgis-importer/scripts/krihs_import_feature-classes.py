@@ -284,13 +284,14 @@ class FeatureClass:
         :return:
         """
         table_name = self.schema.lower() + "." + self.name.lower()
-        sql = "CREATE TABLE %s(\n   " % (table_name)
+        view_name = self.schema.lower() + ".v_" + self.name.lower()
+        sql = "CREATE TABLE %s(\n   " % table_name
         sql += ",\n   ".join([str(f) for f in self.get_valid_fields()])
         if self.oid is not None:
             sql += ", "
-            sql += "PRIMARY KEY("  + self.oid
+            sql += "PRIMARY KEY(" + self.oid
             if self.sub_type is not None:
-                sql += ", "  + self.sub_type
+                sql += ", " + self.sub_type
             sql += ") "
         sql += "\n)"
         if self.sub_type is not None:
@@ -299,12 +300,15 @@ class FeatureClass:
         
         if self.geom is not None:
             info = self.geom.geom_info()
-            sql += "SELECT AddGeometryColumn ('%s', '%s', 'geom', %s, '%s', %s);\n" % (self.schema.lower(), self.name.lower(), str(info["epsg"]), info["type"], str(info["dim"]))
+            sql += "SELECT AddGeometryColumn ('%s', '%s', 'geom', %s, '%s', %s);\n" % (
+                self.schema.lower(), self.name.lower(), str(info["epsg"]), info["type"], str(info["dim"]))
         if self.sub_type is None:
             cont = 0
             for f in self.get_domain_fields():
                 cont += 1
-                sql += "ALTER TABLE %s.%s ADD CONSTRAINT %s_FK_%s FOREIGN KEY(%s) REFERENCES %s.%s(CODE);\n" % (self.schema.lower(), self.name.lower(), self.name.lower(), str(cont), f.domain, self.schema.lower(), f.domain.lower())
+                sql += "ALTER TABLE %s.%s ADD CONSTRAINT %s_FK_%s FOREIGN KEY(%s) REFERENCES %s.%s(CODE);\n" % (
+                    self.schema.lower(), self.name.lower(), self.name.lower(), str(cont),
+                    f.domain, self.schema.lower(), f.domain.lower())
         else:
             for s in self.subtypes:
                 cont = 0
@@ -313,7 +317,9 @@ class FeatureClass:
                 sql += "CREATE TABLE %s PARTITION OF %s FOR VALUES IN (%s);\n" % (partition_name, table_name, s["code"])
                 for f in s["info"]:
                     cont += 1
-                    sql += "ALTER TABLE %s ADD CONSTRAINT %s_FK_%s FOREIGN KEY(%s) REFERENCES %s.%s(CODE);\n" %(partition_name, p_name, str(cont), f["field"], self.schema.lower(), f["domain"])
+                    sql += "ALTER TABLE %s ADD CONSTRAINT %s_FK_%s FOREIGN KEY(%s) REFERENCES %s.%s(CODE);\n" % (
+                        partition_name, p_name, str(cont), f["field"], self.schema.lower(), f["domain"])
+        sql += "CREATE OR REPLACE VIEW %s AS SELECT * FROM %s;\n" % (view_name, table_name)
         return sql
 
 
