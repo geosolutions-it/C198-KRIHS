@@ -156,6 +156,9 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
             layer_name = layer_prefix + ds_cur["name"]
             feedback.pushInfo("GeoServer Publish: " + layer_name + " (" + ds_cur["srs"] + ")")
             try:
+                layer = gs_catalogue.get_layer(store_name + ":" + layer_name)
+                if layer is not None:
+                    gs_catalogue.delete(layer)
                 gs_catalogue.publish_featuretype(layer_name, store, ds_cur["srs"])
                 published_count += 1
             except Exception as e:
@@ -163,6 +166,7 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
             step += 1
             feedback.setCurrentStep(step)
 
+        gs_catalogue.reload()
         layers = gs_catalogue.get_layers(store)
         feedback.pushInfo("-"*80)
         feedback.pushInfo("Published layers: " + str(published_count))
