@@ -410,7 +410,15 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                 sql += "DROP TABLE IF EXISTS %s.%s CASCADE;\n" % (self.pg_schema, name) 
                 sql += "DROP TABLE IF EXISTS %s.%s_tmp CASCADE;\n" % (self.pg_schema, name) 
             sql += str(feature_class)
-            return [name, sql, feature_class.list_fields(False), feature_class.list_fields(True), feature_class.geom.geom_info()["gtype"]] 
+
+            sql_sequence = None
+            if oid is not None:
+                table_name = self.pg_schema + "." + name
+                sql_sequence = "SELECT SETVAL('%s_%s_seq', COALESCE((SELECT MAX(%s) + 1 FROM %s), 1), FALSE);\n" % \
+                               (table_name, oid.lower(), oid.lower(), table_name)
+
+            return [name, sql, feature_class.list_fields(False), feature_class.list_fields(True),
+                    feature_class.geom.geom_info()["gtype"], sql_sequence]
         else:
             return None
 
@@ -457,6 +465,19 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                            alg_params, context=context, feedback=feedback, is_child_algorithm=True)
         except Exception as e:
             feedback.reportError("Error creating table definition: \n" + sql + ": " + str(e), False)
+
+    def update_sequence(self, sql, context, feedback):
+        try:
+            if sql is not None:
+                alg_params = {
+                    'DATABASE': self.pg_conn_name,
+                    'SQL': sql
+                }
+                feedback.pushInfo("   processing => qgis:postgisexecutesql")
+                processing.run('qgis:postgisexecutesql',
+                               alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+        except Exception as e:
+            feedback.reportError("Error updating sequence: \n" + sql + ": " + str(e), False)
 
     def processAlgorithm(self, parameters, context, model_feedback):
         """
@@ -538,25 +559,33 @@ class KhrisXMLFeatureClassesImporterAlgorithm(QgsProcessingAlgorithm):
                                 'T_SRS': None,
                                 'WHERE': ''
                             }
-                            feedback.pushInfo("   processing (B) => qgis:importvectorintopostgisdatabaseavailableconnections")
-                            processing.run('gdal:importvectorintopostgisdatabaseavailableconnections', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                            feedback.pushInfo("   processing (B) => "
+                                              "qgis:importvectorintopostgisdatabaseavailableconnections")
+                            processing.run('gdal:importvectorintopostgisdatabaseavailableconnections',
+                                           alg_params, context=context, feedback=feedback, is_child_algorithm=True)
                         except Exception as e2:
                             feedback.reportError("Error importing data: \n" + definition[0] + ": " + str(e2), False)
                             break        
                 
                         try:
                             #Copy from TMP to FINAL table
-                            sql_copy = "INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s_tmp" % (self.pg_schema, definition[0], definition[2], definition[3], self.pg_schema, definition[0]) + ";"
+                            sql_copy = "INSERT INTO %s.%s(%s) SELECT %s FROM %s.%s_tmp" % \
+                                       (self.pg_schema, definition[0], definition[2], definition[3],
+                                        self.pg_schema, definition[0]) + ";"
                             sql_drop = "DROP TABLE %s.%s_tmp" % (self.pg_schema, definition[0]) + ";"
                             alg_params = {
                                 'DATABASE': self.pg_conn_name,
                                 'SQL': sql_copy + sql_drop
                             }
                             feedback.pushInfo("   processing (C) => qgis:postgisexecutesql")
-                            processing.run('qgis:postgisexecutesql', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+                            processing.run('qgis:postgisexecutesql', alg_params,
+                                           context=context, feedback=feedback, is_child_algorithm=True)
                         except Exception as e3:
                             feedback.reportError("Error moving data: \n" + sql_copy + sql_drop + ": " + str(e3), False)
                             break
+
+                        self.update_sequence(definition[5], context, feedback)
+
                 except Exception as e:
                     feedback.reportError("Error importing domain " + definition[1] + ": " + str(e), False)
             feedback.setCurrentStep(step)
