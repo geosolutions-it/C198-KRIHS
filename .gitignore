@@ -1,0 +1,46 @@
+# build artifacts
+*.pyc
+*.egg-info
+build
+target
+pip-log.txt
+MANIFEST
+dist
+.env
+.idea/
+.vscode/
+.pytest_cache/
+/.idea
+
+# OSX specific
+.Python
+.DS_Store
+
+# virtual env
+/venv
+/pyenv
+
+# sqlite DB
+*.sqlite3*
+
+# cache files
+*__pycache__*
+*.pyc*
+
+# django_dramatiq task logs
+task_logs
+
+# temporary export directory
+/export/tmp
+
+# zipped exports
+/export/*.zip*
+
+# Dockerfile
+Dockerfile
+
+# Docker-compose
+docker-compose.yml
+
+# .env files
+.env
