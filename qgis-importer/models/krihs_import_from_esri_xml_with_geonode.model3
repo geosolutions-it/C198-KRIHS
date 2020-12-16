@@ -1,0 +1,561 @@
+<!DOCTYPE model>
+<Option type="Map">
+  <Option name="children" type="Map">
+    <Option name="script:GeoNodePublisher_1" type="Map">
+      <Option name="active" type="bool" value="true"/>
+      <Option name="alg_config"/>
+      <Option name="alg_id" type="QString" value="script:GeoNodePublisher"/>
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="60"/>
+        <Option name="component_pos_x" type="double" value="975"/>
+        <Option name="component_pos_y" type="double" value="597"/>
+        <Option name="component_width" type="double" value="100"/>
+        <Option name="outputs_collapsed" type="bool" value="true"/>
+        <Option name="parameters_collapsed" type="bool" value="true"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GeoNode Publisher"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="833"/>
+      <Option name="component_pos_y" type="double" value="642"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="dependencies" type="List">
+        <Option type="Map">
+          <Option name="child_id" type="QString" value="script:GeoServerPublisher_1"/>
+          <Option name="conditional_branch" type="QString" value=""/>
+        </Option>
+      </Option>
+      <Option name="id" type="QString" value="script:GeoNodePublisher_1"/>
+      <Option name="outputs"/>
+      <Option name="outputs_collapsed" type="bool" value="true"/>
+      <Option name="parameters_collapsed" type="bool" value="true"/>
+      <Option name="params" type="Map">
+        <Option name="COMMAND" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="execute-something"/>
+          </Option>
+        </Option>
+        <Option name="DB_NAME" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="DBConnectionName"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GEONODE_PASSWORD" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="geonode"/>
+          </Option>
+        </Option>
+        <Option name="GEONODE_REST_URL" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="http://localhost:8080/api/v2/management/"/>
+          </Option>
+        </Option>
+        <Option name="GEONODE_USERNAME" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="admin"/>
+          </Option>
+        </Option>
+        <Option name="GS_ADMIN" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSAdminUser"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_PASSWORD" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSAdminpassword"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_REST_URL" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="http://localhost:8080/geoserver/rest/"/>
+          </Option>
+        </Option>
+        <Option name="GS_STORE_NAME" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSDataStore"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_WORKSPACE" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSWorkspace"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:GeoServerPublisher_1" type="Map">
+      <Option name="active" type="bool" value="true"/>
+      <Option name="alg_config"/>
+      <Option name="alg_id" type="QString" value="script:GeoServerPublisher"/>
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GeoServer Publisher"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="519.2000000000002"/>
+      <Option name="component_pos_y" type="double" value="610.4000000000002"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="dependencies" type="List">
+        <Option type="Map">
+          <Option name="child_id" type="QString" value="script:KhrisXMLFeatureClassesImporterAlgorithm_1"/>
+          <Option name="conditional_branch" type="QString" value=""/>
+        </Option>
+      </Option>
+      <Option name="id" type="QString" value="script:GeoServerPublisher_1"/>
+      <Option name="outputs"/>
+      <Option name="outputs_collapsed" type="bool" value="true"/>
+      <Option name="parameters_collapsed" type="bool" value="true"/>
+      <Option name="params" type="Map">
+        <Option name="DB_NAME" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="DBConnectionName"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_ADMIN" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSAdminUser"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_PASSWORD" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSAdminpassword"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_REST_URL" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSReSTaddress"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_STORE" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSDataStore"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="GS_WORKSPACE" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GSWorkspace"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="XML_PATH" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="XMLWorkspaceDefinition"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:KhrisXMLDomainsImporterAlgorithm_1" type="Map">
+      <Option name="active" type="bool" value="true"/>
+      <Option name="alg_config"/>
+      <Option name="alg_id" type="QString" value="script:KhrisXMLDomainsImporterAlgorithm"/>
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="321.6"/>
+        <Option name="component_pos_y" type="double" value="201.39999999999986"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="true"/>
+        <Option name="parameters_collapsed" type="bool" value="true"/>
+      </Option>
+      <Option name="component_description" type="QString" value="XML Domains Importer"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="121.60000000000005"/>
+      <Option name="component_pos_y" type="double" value="246.39999999999986"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="dependencies"/>
+      <Option name="id" type="QString" value="script:KhrisXMLDomainsImporterAlgorithm_1"/>
+      <Option name="outputs"/>
+      <Option name="outputs_collapsed" type="bool" value="true"/>
+      <Option name="parameters_collapsed" type="bool" value="true"/>
+      <Option name="params" type="Map">
+        <Option name="DBNAME" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="DBConnectionName"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="DROPIFEXISTS" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="bool" value="true"/>
+          </Option>
+        </Option>
+        <Option name="SCHEMA" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="public"/>
+          </Option>
+        </Option>
+        <Option name="XMLPATH" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="XMLWorkspaceDefinition"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+    <Option name="script:KhrisXMLFeatureClassesImporterAlgorithm_1" type="Map">
+      <Option name="active" type="bool" value="true"/>
+      <Option name="alg_config"/>
+      <Option name="alg_id" type="QString" value="script:KhrisXMLFeatureClassesImporterAlgorithm"/>
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="460.79999999999984"/>
+        <Option name="component_pos_y" type="double" value="406.99999999999994"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="true"/>
+        <Option name="parameters_collapsed" type="bool" value="true"/>
+      </Option>
+      <Option name="component_description" type="QString" value="XML Feature Classes Importer"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="260.79999999999984"/>
+      <Option name="component_pos_y" type="double" value="451.99999999999994"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="dependencies" type="List">
+        <Option type="Map">
+          <Option name="child_id" type="QString" value="script:KhrisXMLDomainsImporterAlgorithm_1"/>
+          <Option name="conditional_branch" type="QString" value=""/>
+        </Option>
+      </Option>
+      <Option name="id" type="QString" value="script:KhrisXMLFeatureClassesImporterAlgorithm_1"/>
+      <Option name="outputs"/>
+      <Option name="outputs_collapsed" type="bool" value="true"/>
+      <Option name="parameters_collapsed" type="bool" value="true"/>
+      <Option name="params" type="Map">
+        <Option name="DBNAME" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="DBConnectionName"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="DROPIFEXISTS" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="bool" value="true"/>
+          </Option>
+        </Option>
+        <Option name="GPKGPATH" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="GPKGPath"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+        <Option name="SCHEMA" type="List">
+          <Option type="Map">
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="public"/>
+          </Option>
+        </Option>
+        <Option name="XMLPATH" type="List">
+          <Option type="Map">
+            <Option name="parameter_name" type="QString" value="XMLWorkspaceDefinition"/>
+            <Option name="source" type="int" value="0"/>
+          </Option>
+        </Option>
+      </Option>
+    </Option>
+  </Option>
+  <Option name="designerParameterValues" type="Map">
+    <Option name="DBConnectionName" type="QString" value="krihs"/>
+    <Option name="GPKGPath" type="QString" value="C:\Users\user\Documents\krihs\CONOP.gpkg"/>
+    <Option name="GSAdminUser" type="QString" value="admin"/>
+    <Option name="GSAdminpassword" type="QString" value="geoserver"/>
+    <Option name="GSDataStore" type="QString" value=""/>
+    <Option name="GSReSTaddress" type="QString" value="http://localhost:8080/geoserver/rest/"/>
+    <Option name="GSWorkspace" type="QString" value=""/>
+    <Option name="VERBOSE_LOG" type="bool" value="true"/>
+    <Option name="XMLWorkspaceDefinition" type="QString" value="C:\Users\user\Documents\krihs\CONOP.xml"/>
+  </Option>
+  <Option name="groupBoxes"/>
+  <Option name="help"/>
+  <Option name="modelVariables"/>
+  <Option name="model_group" type="QString" value="krihs"/>
+  <Option name="model_name" type="QString" value="KHRIS IMPORTER"/>
+  <Option name="parameterDefinitions" type="Map">
+    <Option name="DBConnectionName" type="Map">
+      <Option name="default" type="QString" value="krihs"/>
+      <Option name="description" type="QString" value="DB Connection Name"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="DBConnectionName"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="GPKGPath" type="Map">
+      <Option name="behavior" type="int" value="0"/>
+      <Option name="default" type="invalid"/>
+      <Option name="description" type="QString" value="GPKG Path"/>
+      <Option name="extension" type="QString" value=""/>
+      <Option name="filefilter" type="QString" value="All Files (*.*)"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="name" type="QString" value="GPKGPath"/>
+      <Option name="parameter_type" type="QString" value="file"/>
+    </Option>
+    <Option name="GSAdminUser" type="Map">
+      <Option name="default" type="QString" value="admin"/>
+      <Option name="description" type="QString" value="GS Admin User"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="GSAdminUser"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="GSAdminpassword" type="Map">
+      <Option name="default" type="QString" value="geoserver"/>
+      <Option name="description" type="QString" value="GS Admin password"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="GSAdminpassword"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="GSDataStore" type="Map">
+      <Option name="default" type="QString" value=""/>
+      <Option name="description" type="QString" value="GS Data Store"/>
+      <Option name="flags" type="int" value="8"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="GSDataStore"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="GSReSTaddress" type="Map">
+      <Option name="default" type="QString" value="http://localhost:8080/geoserver/rest/"/>
+      <Option name="description" type="QString" value="GS ReST address"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="GSReSTaddress"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="GSWorkspace" type="Map">
+      <Option name="default" type="QString" value=""/>
+      <Option name="description" type="QString" value="GS Workspace"/>
+      <Option name="flags" type="int" value="8"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="multiline" type="bool" value="false"/>
+      <Option name="name" type="QString" value="GSWorkspace"/>
+      <Option name="parameter_type" type="QString" value="string"/>
+    </Option>
+    <Option name="XMLWorkspaceDefinition" type="Map">
+      <Option name="behavior" type="int" value="0"/>
+      <Option name="default" type="invalid"/>
+      <Option name="description" type="QString" value="XML Workspace Definition"/>
+      <Option name="extension" type="QString" value=""/>
+      <Option name="filefilter" type="QString" value="All Files (*.*)"/>
+      <Option name="flags" type="int" value="0"/>
+      <Option name="help" type="QString" value=""/>
+      <Option name="metadata"/>
+      <Option name="name" type="QString" value="XMLWorkspaceDefinition"/>
+      <Option name="parameter_type" type="QString" value="file"/>
+    </Option>
+  </Option>
+  <Option name="parameterOrder"/>
+  <Option name="parameters" type="Map">
+    <Option name="DBConnectionName" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="DBConnectionName"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="163.19999999999993"/>
+      <Option name="component_pos_y" type="double" value="135.1999999999999"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="DBConnectionName"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GPKGPath" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GPKGPath"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="344.00000000000034"/>
+      <Option name="component_pos_y" type="double" value="328.00000000000017"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GPKGPath"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GSAdminUser" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GSAdminUser"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="632.8000000000003"/>
+      <Option name="component_pos_y" type="double" value="390.39999999999975"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GSAdminUser"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GSAdminpassword" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GSAdminpassword"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="632.8"/>
+      <Option name="component_pos_y" type="double" value="433.5999999999999"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GSAdminpassword"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GSDataStore" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GSDataStore"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="632.8"/>
+      <Option name="component_pos_y" type="double" value="474.4000000000004"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GSDataStore"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GSReSTaddress" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GSReSTaddress"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="631.9999999999992"/>
+      <Option name="component_pos_y" type="double" value="345.6000000000002"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GSReSTaddress"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="GSWorkspace" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="GSWorkspace"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="632.8000000000001"/>
+      <Option name="component_pos_y" type="double" value="515.1999999999999"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="GSWorkspace"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+    <Option name="XMLWorkspaceDefinition" type="Map">
+      <Option name="color" type="QString" value=""/>
+      <Option name="comment" type="Map">
+        <Option name="color" type="QString" value=""/>
+        <Option name="component_description" type="QString" value=""/>
+        <Option name="component_height" type="double" value="30"/>
+        <Option name="component_pos_x" type="double" value="0"/>
+        <Option name="component_pos_y" type="double" value="0"/>
+        <Option name="component_width" type="double" value="200"/>
+        <Option name="outputs_collapsed" type="bool" value="false"/>
+        <Option name="parameters_collapsed" type="bool" value="false"/>
+      </Option>
+      <Option name="component_description" type="QString" value="XMLWorkspaceDefinition"/>
+      <Option name="component_height" type="double" value="30"/>
+      <Option name="component_pos_x" type="double" value="463.1999999999997"/>
+      <Option name="component_pos_y" type="double" value="135.20000000000005"/>
+      <Option name="component_width" type="double" value="200"/>
+      <Option name="name" type="QString" value="XMLWorkspaceDefinition"/>
+      <Option name="outputs_collapsed" type="bool" value="false"/>
+      <Option name="parameters_collapsed" type="bool" value="false"/>
+    </Option>
+  </Option>
+</Option>
