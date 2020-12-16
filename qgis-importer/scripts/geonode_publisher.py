@@ -198,7 +198,7 @@ class GeoNodePublisher(QgsProcessingAlgorithm):
             if result.status_code == 200:
                 feedback.pushInfo(f"Request for layer {layer.name} successfuly sent")
             else:
-                feedback.pushInfo(f"Error during processing request for layer {layer.name}")
+                feedback.reportError(f"Error during processing request for layer {layer.name}")
 
         feedback.pushInfo("Layers processing completed")
         return {}
