@@ -159,6 +159,7 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
                 layer = gs_catalogue.get_layer(layer_name)
                 if layer is not None:
                     gs_catalogue.delete(layer)
+                    gs_catalogue.reload()
                 gs_catalogue.publish_featuretype(layer_name, store, ds_cur["srs"])
                 published_count += 1
             except Exception as e:

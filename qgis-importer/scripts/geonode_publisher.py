@@ -171,17 +171,7 @@ class GeoNodePublisher(QgsProcessingAlgorithm):
             QgsProcessingParameterString('GS_STORE_NAME', 'GS Datastore Name', multiLine=False, defaultValue=None))
         self.addParameter(
             QgsProcessingParameterString('GS_WORKSPACE', 'GS Workspace Name', multiLine=False, defaultValue=None))
-    # def get_db_params(self, db_name):
-    #     qs = QgsSettings()
-    #     qs_pg_prefix = "PostgreSQL/connections/" + db_name + "/"
-    #     return dict(
-    #         host=qs.value(qs_pg_prefix + "host"),
-    #         port=qs.value(qs_pg_prefix + "port"),
-    #         dbtype="postgis",
-    #         database=qs.value(qs_pg_prefix + "database"),
-    #         user=qs.value(qs_pg_prefix + "username"),
-    #         passwd=qs.value(qs_pg_prefix + "password"),
-    #     )
+
 
     def processAlgorithm(self, parameters, context, model_feedback):
         """
@@ -198,22 +188,20 @@ class GeoNodePublisher(QgsProcessingAlgorithm):
         feedback.pushInfo("Get GeoServer Catalog: " + parameters["GS_REST_URL"])
 
         layers = self.fetch_layers_from_geoserver(parameters)
-        feedback.pushInfo(f"The following layers are sent to Geonode: {layers}")
+        feedback.pushInfo(f"The following layers are sent to Geonode: {[x.name for x in layers]}")
 
         auth = HTTPBasicAuth(parameters['GEONODE_USERNAME'], parameters['GEONODE_PASSWORD'])
-        output = []
         for layer in layers:
 
             # TODO to be defined the json to sent to the API
             result = requests.post(url=parameters['GEONODE_REST_URL'], auth=auth)
             if result.status_code == 200:
-                feedback.pushInfo(f"Request for layer {layer} successfuly sent")
-                output.append(layer.name)
+                feedback.pushInfo(f"Request for layer {layer.name} successfuly sent")
             else:
-                feedback.pushInfo(f"Error during processing request for layer {layer}")
+                feedback.pushInfo(f"Error during processing request for layer {layer.name}")
 
         feedback.pushInfo("Layers processing completed")
-        return output
+        return {}
 
     @staticmethod
     def fetch_layers_from_geoserver(parameters):

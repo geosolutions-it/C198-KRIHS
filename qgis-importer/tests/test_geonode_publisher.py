@@ -48,9 +48,8 @@ class MyTestCase(unittest.TestCase):
     def test_sut_processAlgorithm_should_produce_the_expected_output(self, mocked_post_request):
         mocked_post_request.return_value = self.successful_request
         self.sut.fetch_layers_from_geoserver.return_value = [self.example_layer]
-        expected = [self.example_layer.name]
         actual = self.sut.processAlgorithm(self.parameters, {}, QgsProcessingFeedback())
-        self.assertListEqual(expected, actual)
+        self.assertEqual({}, actual)
 
 
 if __name__ == '__main__':
