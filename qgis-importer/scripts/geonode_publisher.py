@@ -19,18 +19,16 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         - GEONODE_PASSWORD: GeoNode username password (default 'geoserver')
         """
         self.addParameter(
-             QgsProcessingParameterString('GEONODE_REST_URL', 'GeoNode REST address', multiLine=False, defaultValue='http://localhost:8080/api/v2/management/'))
+            QgsProcessingParameterString('GEONODE_REST_URL', 'GeoNode REST address', multiLine=False,
+                                         defaultValue='http://localhost:8000/api/v2/management/updatelayers'))
         self.addParameter(
             QgsProcessingParameterString('GS_REST_URL', 'GS ReST address', multiLine=False,
                                          defaultValue='http://localhost:8080/geoserver/rest/'))
         self.addParameter(
-             QgsProcessingParameterString('COMMAND', 'Command to execute on GeoNode', multiLine=False, defaultValue=''))
+            QgsProcessingParameterString('GEONODE_USERNAME', 'GeoNode API user', multiLine=False, defaultValue='admin'))
         self.addParameter(
-             QgsProcessingParameterString('GEONODE_USERNAME', 'GeoNode API user', multiLine=False, defaultValue='admin'))
-        self.addParameter(
-             QgsProcessingParameterString('GEONODE_PASSWORD', 'GeoNode API password', multiLine=False, defaultValue='geonode'))
-        self.addParameter(
-            QgsProcessingParameterString('DB_NAME', 'Pg Connection Name', multiLine=False, defaultValue='KRIHS'))
+            QgsProcessingParameterString('GEONODE_PASSWORD', 'GeoNode API password', multiLine=False,
+                                         defaultValue='admin'))
         self.addParameter(
             QgsProcessingParameterString('GS_ADMIN', 'GS Admin user', multiLine=False, defaultValue='admin'))
         self.addParameter(
@@ -39,7 +37,6 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             QgsProcessingParameterString('GS_STORE_NAME', 'GS Datastore Name', multiLine=False, defaultValue=None))
         self.addParameter(
             QgsProcessingParameterString('GS_WORKSPACE', 'GS Workspace Name', multiLine=False, defaultValue=None))
-
 
     def processAlgorithm(self, parameters, context, model_feedback):
         """
@@ -56,27 +53,39 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         feedback.pushInfo("Get GeoServer Catalog: " + parameters["GS_REST_URL"])
 
         layers = self.fetch_layers_from_geoserver(parameters)
-        feedback.pushInfo(f"The following layers are sent to Geonode: {[x.name for x in layers]}")
+        feedback.pushInfo(
+            f"The following layers are sent to Geonode: {[x.name for x in layers]}"
+        )
 
-        auth = HTTPBasicAuth(parameters['GEONODE_USERNAME'], parameters['GEONODE_PASSWORD'])
+        auth = HTTPBasicAuth(
+            parameters["GEONODE_USERNAME"], parameters["GEONODE_PASSWORD"]
+        )
         for layer in layers:
-
-            # TODO to be defined the json to sent to the API
-            # todo timeout
-            result = requests.post(url=parameters['GEONODE_REST_URL'], auth=auth)
+            json_to_send = {
+                "kwargs": {
+                    "store": parameters["GS_STORE_NAME"],
+                    "workspace": parameters["GS_WORKSPACE"],
+                    "filter": layer.name,
+                }
+            }
+            result = requests.post(url=parameters["GEONODE_REST_URL"], auth=auth, json=json_to_send)
             if result.status_code == 200:
                 feedback.pushInfo(f"Request for layer {layer.name} successfuly sent")
             else:
-                feedback.reportError(f"Error during processing request for layer {layer.name}")
+                feedback.reportError(
+                    f"Error during processing request for layer {layer.name}"
+                )
 
         feedback.pushInfo("Layers processing completed")
         return {}
 
     @staticmethod
     def fetch_layers_from_geoserver(parameters):
-        store_name = parameters['GS_STORE_NAME']
-        workspace = parameters['GS_WORKSPACE']
-        gs_catalogue = Catalog(parameters["GS_REST_URL"], parameters["GS_ADMIN"], parameters["GS_PASSWORD"])
+        store_name = parameters["GS_STORE_NAME"]
+        workspace = parameters["GS_WORKSPACE"]
+        gs_catalogue = Catalog(
+            parameters["GS_REST_URL"], parameters["GS_ADMIN"], parameters["GS_PASSWORD"]
+        )
 
         store = gs_catalogue.get_store(store_name, workspace)
 
@@ -87,27 +96,27 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         Name of the algorithm
         :return:
         """
-        return 'GeoNodePublisher'
+        return "GeoNodePublisher"
 
     def displayName(self):
         """
         Name to display for the algorithm in QGIS
         :return:
         """
-        return 'GeoNode Publisher'
+        return "GeoNode Publisher"
 
     def group(self):
         """
         Name of the group for this script
         :return:
         """
-        return 'krihs'
+        return "krihs"
 
     def groupId(self):
         """
         Identifier for the group
         """
-        return 'krihs'
+        return "krihs"
 
     def createInstance(self):
         """
