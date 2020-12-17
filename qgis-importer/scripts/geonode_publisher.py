@@ -21,7 +21,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         """
         self.addParameter(
             QgsProcessingParameterString('GEONODE_REST_URL', 'GeoNode REST address', multiLine=False,
-                                         defaultValue='http://localhost:8000/api/v2/management/updatelayers'))
+                                         defaultValue='http://localhost:8000/api/v2/management/updatelayers/'))
         self.addParameter(
             QgsProcessingParameterString('GS_REST_URL', 'GS ReST address', multiLine=False,
                                          defaultValue='http://localhost:8080/geoserver/rest/'))
