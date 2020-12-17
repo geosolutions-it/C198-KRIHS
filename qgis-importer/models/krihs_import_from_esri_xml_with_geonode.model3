@@ -41,7 +41,7 @@
         <Option type="List" name="GEONODE_REST_URL">
           <Option type="Map">
             <Option type="int" name="source" value="2"/>
-            <Option type="QString" name="static_value" value="http://localhost:8000/api/v2/management/updatelayers"/>
+            <Option type="QString" name="static_value" value="http://localhost:8000/api/v2/management/updatelayers/"/>
           </Option>
         </Option>
         <Option type="List" name="GEONODE_USERNAME">
