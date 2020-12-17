@@ -11,23 +11,11 @@ from scripts.geonode_publisher import GeoNodeSynchronizer, QgsProcessingFeedback
 class MyTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.sut = GeoNodeSynchronizer()
-        self.example_layer = namedtuple("Layer", ["title"])
-        self.example_layer.name = "my_layer_title"
+        self.example_layer = namedtuple("Layer", ["name"])
+        self.example_layer.name = "c:my_layer_title"
         self.successful_request = namedtuple("Response", ["status_code"])
         self.successful_request.status_code = 200
-        self.parameters = {
-            'GEONODE_REST_URL': 'http://localhost:8080/api/v2/management/',
-            'GS_REST_URL': 'http://localhost:8080/geoserver/rest/',
-            'COMMAND': '',
-            'GEONODE_USERNAME': 'admin',
-            'GEONODE_PASSWORD': 'geonode',
-            'DB_NAME': 'KRIHS',
-            'GS_ADMIN': 'admin',
-            'GS_PASSWORD': 'geoserver',
-            'GS_STORE_NAME': None,
-            'GS_WORKSPACE': None
-        }
-        self.sut.fetch_layers_from_geoserver = MagicMock()
+        self.parameters = { "GEONODE_PASSWORD": 'admin', "GEONODE_REST_URL": 'http://localhost:8000/api/v2/management/updatelayers/', "GEONODE_USERNAME": 'admin', "GS_ADMIN": 'admin', "GS_PASSWORD": 'geoserver', "GS_REST_URL": 'http://localhost:8080/geoserver/rest/', "GS_STORE_NAME": 'krihs_ds', "GS_WORKSPACE": 'krihs_ws' }
 
     def test_sut_correclty_initiate(self):
         self.assertEqual(GeoNodeSynchronizer, type(self.sut.createInstance()))

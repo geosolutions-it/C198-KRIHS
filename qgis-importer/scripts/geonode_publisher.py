@@ -2,6 +2,7 @@ from qgis.core import *
 from geoserver.catalog import Catalog
 import requests
 from requests.auth import HTTPBasicAuth
+import json
 
 
 class GeoNodeSynchronizer(QgsProcessingAlgorithm):
@@ -34,9 +35,9 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterString('GS_PASSWORD', 'GS Admin password', multiLine=False, defaultValue='geoserver'))
         self.addParameter(
-            QgsProcessingParameterString('GS_STORE_NAME', 'GS Datastore Name', multiLine=False, defaultValue=None))
+            QgsProcessingParameterString('GS_STORE_NAME', 'GS Datastore Name', multiLine=False, defaultValue="krihs_ds"))
         self.addParameter(
-            QgsProcessingParameterString('GS_WORKSPACE', 'GS Workspace Name', multiLine=False, defaultValue=None))
+            QgsProcessingParameterString('GS_WORKSPACE', 'GS Workspace Name', multiLine=False, defaultValue="krihs_ws"))
 
     def processAlgorithm(self, parameters, context, model_feedback):
         """
@@ -54,23 +55,31 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
 
         layers = self.fetch_layers_from_geoserver(parameters)
         feedback.pushInfo(
-            f"The following layers are sent to Geonode: {[x.name for x in layers]}"
+            f"The following layers are sent to Geonode: {[x.name for x in layers]} at {parameters['GEONODE_REST_URL']}"
         )
 
         auth = HTTPBasicAuth(
             parameters["GEONODE_USERNAME"], parameters["GEONODE_PASSWORD"]
         )
+
+        feedback.pushInfo(f"Param used {parameters}")
+
+        headers = {'Content-Type': 'application/json'}
         for layer in layers:
+            layer_name = layer.name.split(":")[1]
+            feedback.pushInfo(f"Start processing layer {layer_name}")
             json_to_send = {
                 "kwargs": {
                     "store": parameters["GS_STORE_NAME"],
                     "workspace": parameters["GS_WORKSPACE"],
-                    "filter": layer.name,
+                    "filter": layer_name,
                 }
             }
-            result = requests.post(url=parameters["GEONODE_REST_URL"], auth=auth, json=json_to_send)
+            feedback.pushInfo(f"Start processing layer {json_to_send}")
+
+            result = requests.post(url=parameters["GEONODE_REST_URL"], auth=auth, json=json_to_send, headers=headers)
             if result.status_code == 200:
-                feedback.pushInfo(f"Request for layer {layer.name} successfuly sent")
+                feedback.pushInfo(f"Request for layer {layer_name} successfuly sent")
             else:
                 feedback.reportError(
                     f"Error during processing request for layer {layer.name}"
@@ -83,13 +92,17 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
     def fetch_layers_from_geoserver(parameters):
         store_name = parameters["GS_STORE_NAME"]
         workspace = parameters["GS_WORKSPACE"]
+
         gs_catalogue = Catalog(
             parameters["GS_REST_URL"], parameters["GS_ADMIN"], parameters["GS_PASSWORD"]
         )
+        resources = gs_catalogue.get_resources(stores=store_name, workspaces=workspace)
+        layers = []
+        for resource in resources:
+            layer = gs_catalogue.get_layers(resource)
+            layers += layer
+        return layers
 
-        store = gs_catalogue.get_store(store_name, workspace)
-
-        return gs_catalogue.get_layers(store)
 
     def name(self):
         """
@@ -103,7 +116,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         Name to display for the algorithm in QGIS
         :return:
         """
-        return "GeoNode Publisher"
+        return "GeoNode Synchronizer"
 
     def group(self):
         """
