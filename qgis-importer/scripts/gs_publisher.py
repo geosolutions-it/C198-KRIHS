@@ -126,7 +126,6 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
         feedback.pushInfo("Get GeoServer Catalog: " + parameters["GS_REST_URL"])
 
         username, password = self.get_credentials(parameters['GS_AUTH_ID'])
-        feedback.pushInfo(f"{username}:{password}")
 
         gs_catalogue = Catalog(parameters["GS_REST_URL"], username, password)
 

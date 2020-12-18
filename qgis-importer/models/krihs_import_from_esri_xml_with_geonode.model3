@@ -10,16 +10,16 @@
         <Option name="color" type="QString" value=""/>
         <Option name="component_description" type="QString" value=""/>
         <Option name="component_height" type="double" value="60"/>
-        <Option name="component_pos_x" type="double" value="1162"/>
-        <Option name="component_pos_y" type="double" value="569"/>
+        <Option name="component_pos_x" type="double" value="1054"/>
+        <Option name="component_pos_y" type="double" value="556"/>
         <Option name="component_width" type="double" value="100"/>
         <Option name="outputs_collapsed" type="bool" value="true"/>
         <Option name="parameters_collapsed" type="bool" value="true"/>
       </Option>
       <Option name="component_description" type="QString" value="GeoNode Synchronizer"/>
       <Option name="component_height" type="double" value="30"/>
-      <Option name="component_pos_x" type="double" value="962"/>
-      <Option name="component_pos_y" type="double" value="614"/>
+      <Option name="component_pos_x" type="double" value="854"/>
+      <Option name="component_pos_y" type="double" value="601"/>
       <Option name="component_width" type="double" value="200"/>
       <Option name="dependencies" type="List">
         <Option type="Map">
@@ -32,22 +32,16 @@
       <Option name="outputs_collapsed" type="bool" value="true"/>
       <Option name="parameters_collapsed" type="bool" value="true"/>
       <Option name="params" type="Map">
-        <Option name="GEONODE_PASSWORD" type="List">
+        <Option name="GEONODE_AUTH_ID" type="List">
           <Option type="Map">
             <Option name="source" type="int" value="2"/>
-            <Option name="static_value" type="QString" value="admin"/>
+            <Option name="static_value" type="QString" value="GeoNodeAuthId"/>
           </Option>
         </Option>
         <Option name="GEONODE_REST_URL" type="List">
           <Option type="Map">
             <Option name="source" type="int" value="2"/>
-            <Option name="static_value" type="QString" value="http://localhost:8000/api/v2/management/updatelayers"/>
-          </Option>
-        </Option>
-        <Option name="GEONODE_USERNAME" type="List">
-          <Option type="Map">
-            <Option name="source" type="int" value="2"/>
-            <Option name="static_value" type="QString" value="admin"/>
+            <Option name="static_value" type="QString" value="http://localhost:8000/api/v2/management/updatelayers/"/>
           </Option>
         </Option>
         <Option name="GS_ADMIN" type="List">
@@ -90,17 +84,17 @@
       <Option name="comment" type="Map">
         <Option name="color" type="QString" value=""/>
         <Option name="component_description" type="QString" value=""/>
-        <Option name="component_height" type="double" value="30"/>
-        <Option name="component_pos_x" type="double" value="0"/>
-        <Option name="component_pos_y" type="double" value="0"/>
-        <Option name="component_width" type="double" value="200"/>
-        <Option name="outputs_collapsed" type="bool" value="false"/>
-        <Option name="parameters_collapsed" type="bool" value="false"/>
+        <Option name="component_height" type="double" value="60"/>
+        <Option name="component_pos_x" type="double" value="670"/>
+        <Option name="component_pos_y" type="double" value="579"/>
+        <Option name="component_width" type="double" value="100"/>
+        <Option name="outputs_collapsed" type="bool" value="true"/>
+        <Option name="parameters_collapsed" type="bool" value="true"/>
       </Option>
       <Option name="component_description" type="QString" value="GeoServer Publisher"/>
       <Option name="component_height" type="double" value="30"/>
-      <Option name="component_pos_x" type="double" value="519.2000000000002"/>
-      <Option name="component_pos_y" type="double" value="610.4000000000002"/>
+      <Option name="component_pos_x" type="double" value="554"/>
+      <Option name="component_pos_y" type="double" value="604"/>
       <Option name="component_width" type="double" value="200"/>
       <Option name="dependencies" type="List">
         <Option type="Map">
@@ -115,20 +109,14 @@
       <Option name="params" type="Map">
         <Option name="DB_NAME" type="List">
           <Option type="Map">
-            <Option name="parameter_name" type="QString" value="DBConnectionName"/>
-            <Option name="source" type="int" value="0"/>
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="KRIHS"/>
           </Option>
         </Option>
-        <Option name="GS_ADMIN" type="List">
+        <Option name="GS_AUTH_ID" type="List">
           <Option type="Map">
-            <Option name="parameter_name" type="QString" value="GSAdminUser"/>
-            <Option name="source" type="int" value="0"/>
-          </Option>
-        </Option>
-        <Option name="GS_PASSWORD" type="List">
-          <Option type="Map">
-            <Option name="parameter_name" type="QString" value="GSAdminpassword"/>
-            <Option name="source" type="int" value="0"/>
+            <Option name="source" type="int" value="2"/>
+            <Option name="static_value" type="QString" value="6tdnmq4"/>
           </Option>
         </Option>
         <Option name="GS_REST_URL" type="List">
@@ -278,9 +266,9 @@
     <Option name="GPKGPath" type="QString" value="C:\Users\user\Documents\krihs\CONOP.gpkg"/>
     <Option name="GSAdminUser" type="QString" value="admin"/>
     <Option name="GSAdminpassword" type="QString" value="geoserver"/>
-    <Option name="GSDataStore" type="QString" value=""/>
+    <Option name="GSDataStore" type="QString" value="test_ds"/>
     <Option name="GSReSTaddress" type="QString" value="http://localhost:8080/geoserver/rest/"/>
-    <Option name="GSWorkspace" type="QString" value=""/>
+    <Option name="GSWorkspace" type="QString" value="test_ws"/>
     <Option name="VERBOSE_LOG" type="bool" value="true"/>
     <Option name="XMLWorkspaceDefinition" type="QString" value="C:\Users\user\Documents\krihs\CONOP.xml"/>
   </Option>
@@ -311,26 +299,6 @@
       <Option name="metadata"/>
       <Option name="name" type="QString" value="GPKGPath"/>
       <Option name="parameter_type" type="QString" value="file"/>
-    </Option>
-    <Option name="GSAdminUser" type="Map">
-      <Option name="default" type="QString" value="admin"/>
-      <Option name="description" type="QString" value="GS Admin User"/>
-      <Option name="flags" type="int" value="0"/>
-      <Option name="help" type="QString" value=""/>
-      <Option name="metadata"/>
-      <Option name="multiline" type="bool" value="false"/>
-      <Option name="name" type="QString" value="GSAdminUser"/>
-      <Option name="parameter_type" type="QString" value="string"/>
-    </Option>
-    <Option name="GSAdminpassword" type="Map">
-      <Option name="default" type="QString" value="geoserver"/>
-      <Option name="description" type="QString" value="GS Admin password"/>
-      <Option name="flags" type="int" value="0"/>
-      <Option name="help" type="QString" value=""/>
-      <Option name="metadata"/>
-      <Option name="multiline" type="bool" value="false"/>
-      <Option name="name" type="QString" value="GSAdminpassword"/>
-      <Option name="parameter_type" type="QString" value="string"/>
     </Option>
     <Option name="GSDataStore" type="Map">
       <Option name="default" type="QString" value="krihs_ds"/>
@@ -419,48 +387,6 @@
       <Option name="outputs_collapsed" type="bool" value="false"/>
       <Option name="parameters_collapsed" type="bool" value="false"/>
     </Option>
-    <Option name="GSAdminUser" type="Map">
-      <Option name="color" type="QString" value=""/>
-      <Option name="comment" type="Map">
-        <Option name="color" type="QString" value=""/>
-        <Option name="component_description" type="QString" value=""/>
-        <Option name="component_height" type="double" value="30"/>
-        <Option name="component_pos_x" type="double" value="0"/>
-        <Option name="component_pos_y" type="double" value="0"/>
-        <Option name="component_width" type="double" value="200"/>
-        <Option name="outputs_collapsed" type="bool" value="false"/>
-        <Option name="parameters_collapsed" type="bool" value="false"/>
-      </Option>
-      <Option name="component_description" type="QString" value="GSAdminUser"/>
-      <Option name="component_height" type="double" value="30"/>
-      <Option name="component_pos_x" type="double" value="632.8000000000003"/>
-      <Option name="component_pos_y" type="double" value="390.39999999999975"/>
-      <Option name="component_width" type="double" value="200"/>
-      <Option name="name" type="QString" value="GSAdminUser"/>
-      <Option name="outputs_collapsed" type="bool" value="false"/>
-      <Option name="parameters_collapsed" type="bool" value="false"/>
-    </Option>
-    <Option name="GSAdminpassword" type="Map">
-      <Option name="color" type="QString" value=""/>
-      <Option name="comment" type="Map">
-        <Option name="color" type="QString" value=""/>
-        <Option name="component_description" type="QString" value=""/>
-        <Option name="component_height" type="double" value="30"/>
-        <Option name="component_pos_x" type="double" value="0"/>
-        <Option name="component_pos_y" type="double" value="0"/>
-        <Option name="component_width" type="double" value="200"/>
-        <Option name="outputs_collapsed" type="bool" value="false"/>
-        <Option name="parameters_collapsed" type="bool" value="false"/>
-      </Option>
-      <Option name="component_description" type="QString" value="GSAdminpassword"/>
-      <Option name="component_height" type="double" value="30"/>
-      <Option name="component_pos_x" type="double" value="632.8"/>
-      <Option name="component_pos_y" type="double" value="433.5999999999999"/>
-      <Option name="component_width" type="double" value="200"/>
-      <Option name="name" type="QString" value="GSAdminpassword"/>
-      <Option name="outputs_collapsed" type="bool" value="false"/>
-      <Option name="parameters_collapsed" type="bool" value="false"/>
-    </Option>
     <Option name="GSDataStore" type="Map">
       <Option name="color" type="QString" value=""/>
       <Option name="comment" type="Map">
@@ -497,7 +423,7 @@
       <Option name="component_description" type="QString" value="GSReSTaddress"/>
       <Option name="component_height" type="double" value="30"/>
       <Option name="component_pos_x" type="double" value="631.9999999999992"/>
-      <Option name="component_pos_y" type="double" value="345.6000000000002"/>
+      <Option name="component_pos_y" type="double" value="426.6000000000002"/>
       <Option name="component_width" type="double" value="200"/>
       <Option name="name" type="QString" value="GSReSTaddress"/>
       <Option name="outputs_collapsed" type="bool" value="false"/>
