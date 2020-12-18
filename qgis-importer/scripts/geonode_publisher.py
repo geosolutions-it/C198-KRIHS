@@ -1,8 +1,7 @@
-from qgis.core import *
-from geoserver.catalog import Catalog
 import requests
+from geoserver.catalog import Catalog
+from qgis.core import *
 from requests.auth import HTTPBasicAuth
-import json
 
 
 class GeoNodeSynchronizer(QgsProcessingAlgorithm):
@@ -26,10 +25,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             QgsProcessingParameterString('GS_REST_URL', 'GS ReST address', multiLine=False,
                                          defaultValue='http://localhost:8080/geoserver/rest/'))
         self.addParameter(
-            QgsProcessingParameterString('GEONODE_USERNAME', 'GeoNode API user', multiLine=False, defaultValue='admin'))
-        self.addParameter(
-            QgsProcessingParameterString('GEONODE_PASSWORD', 'GeoNode API password', multiLine=False,
-                                         defaultValue='admin'))
+            QgsProcessingParameterString('GEONODE_AUTH_ID', 'GeoNode Authentication name', multiLine=False, defaultValue='GeoNode'))
         self.addParameter(
             QgsProcessingParameterString('GS_ADMIN', 'GS Admin user', multiLine=False, defaultValue='admin'))
         self.addParameter(
@@ -58,8 +54,11 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             f"The following layers are sent to Geonode: {[x.name for x in layers]} at {parameters['GEONODE_REST_URL']}"
         )
 
+        credentials = self.get_credentials(parameters['GEONODE_AUTH_ID'])
+        feedback.pushInfo(f"Param used {credentials}")
+
         auth = HTTPBasicAuth(
-            parameters["GEONODE_USERNAME"], parameters["GEONODE_PASSWORD"]
+            credentials["username"], credentials["password"]
         )
 
         feedback.pushInfo(f"Param used {parameters}")
@@ -103,6 +102,11 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             layers += layer
         return layers
 
+    def get_credentials(self, auth_id):
+        auth_mgr = QgsApplication.authManager()
+        auth_cfg = QgsAuthMethodConfig()
+        auth_mgr.loadAuthenticationConfig(auth_id, auth_cfg, True)
+        return auth_cfg.configMap()
 
     def name(self):
         """
