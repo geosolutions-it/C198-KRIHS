@@ -59,9 +59,7 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterString('GS_REST_URL', 'GS ReST address', multiLine=False, defaultValue='http://localhost:8080/geoserver/rest/'))
         self.addParameter(
-            QgsProcessingParameterString('GS_ADMIN', 'GS Admin user', multiLine=False, defaultValue='admin'))
-        self.addParameter(
-            QgsProcessingParameterString('GS_PASSWORD', 'GS Admin password', multiLine=False, defaultValue='geoserver'))
+            QgsProcessingParameterString('GS_AUTH_ID', 'GS Auth id', multiLine=False, defaultValue='6tdnmq4'))
         self.addParameter(
             QgsProcessingParameterString('GS_STORE', 'GS Datastore Name', multiLine=False, defaultValue=None))
         self.addParameter(
@@ -126,7 +124,10 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
         feedback = QgsProcessingMultiStepFeedback(2 + len(dataset_list), model_feedback)
 
         feedback.pushInfo("Get GeoServer Catalog: " + parameters["GS_REST_URL"])
-        gs_catalogue = Catalog(parameters["GS_REST_URL"], parameters["GS_ADMIN"], parameters["GS_PASSWORD"])
+
+        username, password = self.get_credentials(parameters['GS_AUTH_ID'])
+
+        gs_catalogue = Catalog(parameters["GS_REST_URL"], username, password)
 
         # workspace
         if wrk_name == "" or wrk_name is None:
@@ -178,6 +179,14 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
         results = {}
         outputs = {}
         return results
+
+    @staticmethod
+    def get_credentials(auth_id):
+        auth_mgr = QgsApplication.authManager()
+        auth_cfg = QgsAuthMethodConfig()
+        auth_mgr.loadAuthenticationConfig(auth_id, auth_cfg, True)
+        credentials = auth_cfg.configMap()
+        return credentials['username'], credentials['password']
 
     def name(self):
         """
