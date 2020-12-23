@@ -284,7 +284,7 @@ class FeatureClass:
         :return:
         """
         table_name = self.schema.lower() + "." + self.name.lower()
-        view_name = self.schema.lower() + ".v_" + self.name.lower()
+        # view_name = self.schema.lower() + ".v_" + self.name.lower()
         sql = "CREATE TABLE %s(\n   " % table_name
         sql += ",\n   ".join([str(f) for f in self.get_valid_fields()])
         if self.oid is not None:
@@ -319,7 +319,7 @@ class FeatureClass:
                     cont += 1
                     sql += "ALTER TABLE %s ADD CONSTRAINT %s_FK_%s FOREIGN KEY(%s) REFERENCES %s.%s(CODE);\n" % (
                         partition_name, p_name, str(cont), f["field"], self.schema.lower(), f["domain"])
-        sql += "CREATE OR REPLACE VIEW %s AS SELECT * FROM %s;\n" % (view_name, table_name)
+        # sql += "CREATE OR REPLACE VIEW %s AS SELECT * FROM %s;\n" % (view_name, table_name)
         sql += "DELETE FROM public.gt_pk_metadata " \
                "WHERE table_schema = '%s' AND table_name = '%s' " \
                "AND pk_column='objectid';\n" % (self.schema.lower(), "v_" + self.name.lower())
