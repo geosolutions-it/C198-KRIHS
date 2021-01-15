@@ -152,9 +152,8 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
 
         step = 2
         published_count = 0
-        layer_prefix = "v_"
         for ds_cur in dataset_list:
-            layer_name = layer_prefix + ds_cur["name"]
+            layer_name = ds_cur["name"]
             feedback.pushInfo("GeoServer Publish: " + layer_name + " (" + ds_cur["srs"] + ")")
             try:
                 resource = gs_catalogue.get_resource(layer_name, store, workspace)
