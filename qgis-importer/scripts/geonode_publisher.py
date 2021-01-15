@@ -92,7 +92,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         gs_credentials = get_credentials(parameters['GS_AUTH_ID'])
 
         gs_catalogue = Catalog(
-            parameters["GS_REST_URL"], gs_credentials['username'], gs_credentials['password']
+            parameters["GS_REST_URL"], gs_credentials['username'], gs_credentials['password'], validate_ssl_certificate=False
         )
         resources = gs_catalogue.get_resources(stores=store_name, workspaces=workspace)
         layers = []
