@@ -20,16 +20,14 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         """
         self.addParameter(
             QgsProcessingParameterString('GEONODE_REST_URL', 'GeoNode REST address', multiLine=False,
-                                         defaultValue='http://localhost:8000/api/v2/management/updatelayers/'))
+                                         defaultValue='http://localhost:8000/api/v2/management/'))
         self.addParameter(
             QgsProcessingParameterString('GS_REST_URL', 'GS ReST address', multiLine=False,
                                          defaultValue='http://localhost:8080/geoserver/rest/'))
         self.addParameter(
-            QgsProcessingParameterString('GEONODE_AUTH_ID', 'GeoNode Authentication name', multiLine=False, defaultValue='GeoNode'))
+            QgsProcessingParameterString('GEONODE_AUTH_ID', 'GeoNode Authentication id', multiLine=False, defaultValue='GeoNode'))
         self.addParameter(
-            QgsProcessingParameterString('GS_ADMIN', 'GS Admin user', multiLine=False, defaultValue='admin'))
-        self.addParameter(
-            QgsProcessingParameterString('GS_PASSWORD', 'GS Admin password', multiLine=False, defaultValue='geoserver'))
+            QgsProcessingParameterString('GS_AUTH_ID', 'GS Authentication id', multiLine=False, defaultValue='admin'))
         self.addParameter(
             QgsProcessingParameterString('GS_STORE_NAME', 'GS Datastore Name', multiLine=False, defaultValue="krihs_ds"))
         self.addParameter(
@@ -54,8 +52,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             f"The following layers are sent to Geonode: {[x.name for x in layers]} at {parameters['GEONODE_REST_URL']}"
         )
 
-        credentials = self.get_credentials(parameters['GEONODE_AUTH_ID'])
-        feedback.pushInfo(f"Param used {credentials}")
+        credentials = get_credentials(parameters['GEONODE_AUTH_ID'])
 
         auth = HTTPBasicAuth(
             credentials["username"], credentials["password"]
@@ -76,7 +73,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             }
             feedback.pushInfo(f"Start processing layer {json_to_send}")
 
-            result = requests.post(url=parameters["GEONODE_REST_URL"], auth=auth, json=json_to_send, headers=headers)
+            result = requests.post(url=f'{parameters["GEONODE_REST_URL"]}updatelayers/', auth=auth, json=json_to_send, headers=headers, verify=False)
             if result.status_code == 200:
                 feedback.pushInfo(f"Request for layer {layer_name} successfuly sent")
             else:
@@ -92,8 +89,10 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         store_name = parameters["GS_STORE_NAME"]
         workspace = parameters["GS_WORKSPACE"]
 
+        gs_credentials = get_credentials(parameters['GS_AUTH_ID'])
+
         gs_catalogue = Catalog(
-            parameters["GS_REST_URL"], parameters["GS_ADMIN"], parameters["GS_PASSWORD"]
+            parameters["GS_REST_URL"], gs_credentials['username'], gs_credentials['password']
         )
         resources = gs_catalogue.get_resources(stores=store_name, workspaces=workspace)
         layers = []
@@ -102,11 +101,6 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             layers += layer
         return layers
 
-    def get_credentials(self, auth_id):
-        auth_mgr = QgsApplication.authManager()
-        auth_cfg = QgsAuthMethodConfig()
-        auth_mgr.loadAuthenticationConfig(auth_id, auth_cfg, True)
-        return auth_cfg.configMap()
 
     def name(self):
         """
@@ -141,3 +135,10 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         :return:
         """
         return GeoNodeSynchronizer()
+
+
+def get_credentials(auth_id):
+    auth_mgr = QgsApplication.authManager()
+    auth_cfg = QgsAuthMethodConfig()
+    auth_mgr.loadAuthenticationConfig(auth_id, auth_cfg, True)
+    return auth_cfg.configMap()
