@@ -44,6 +44,9 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         # Use a multi-step feedback, so that individual child algorithm progress reports are adjusted for the
         # overall progress through the model
 
+        parameters['GS_STORE_NAME'] = parameters.get('GS_STORE_NAME', None) or 'krihs_ds'
+        parameters['GS_WORKSPACE'] = parameters.get('GS_WORKSPACE', None) or 'krihs_ws'
+
         feedback = QgsProcessingMultiStepFeedback(0, model_feedback)
         feedback.pushInfo("Get GeoServer Catalog: " + parameters["GS_REST_URL"])
 
@@ -77,8 +80,9 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
             if result.status_code == 200:
                 feedback.pushInfo(f"Request for layer {layer_name} successfuly sent")
             else:
+                print(result.json())
                 feedback.reportError(
-                    f"Error during processing request for layer {layer.name}"
+                    f"Error during processing request for layer {layer.name} with error: {result.json()}"
                 )
 
         feedback.pushInfo("Layers processing completed")
@@ -92,7 +96,7 @@ class GeoNodeSynchronizer(QgsProcessingAlgorithm):
         gs_credentials = get_credentials(parameters['GS_AUTH_ID'])
 
         gs_catalogue = Catalog(
-            parameters["GS_REST_URL"], gs_credentials['username'], gs_credentials['password']
+            parameters["GS_REST_URL"], gs_credentials['username'], gs_credentials['password'], validate_ssl_certificate=False
         )
         resources = gs_catalogue.get_resources(stores=store_name, workspaces=workspace)
         layers = []
