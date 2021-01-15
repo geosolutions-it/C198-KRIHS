@@ -22,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         self.example_layer.name = "c:my_layer_title"
         self.successful_request = namedtuple("Response", ["status_code"])
         self.successful_request.status_code = 200
-        self.parameters = { "GEONODE_AUTH_ID": 'k51x6pn', "GEONODE_REST_URL": 'http://localhost:8000/api/v2/management/updatelayers/', "GS_ADMIN": 'admin', "GS_PASSWORD": 'geoserver', "GS_REST_URL": 'http://localhost:8080/geoserver/rest/', "GS_STORE_NAME": 'krihs_ds', "GS_WORKSPACE": 'krihs_ws' }
+        self.parameters = { "GEONODE_AUTH_ID": 'k51x6pn', "GEONODE_REST_URL": 'http://localhost:8000/api/v2/management/updatelayers/', "GS_ADMIN": 'admin', "GS_PASSWORD": 'geoserver', "GS_REST_URL": 'http://localhost:8080/geoserver/rest/'}
         self.sut.fetch_layers_from_geoserver = MagicMock()
         self.sut.get_credentials = MagicMock()
 

@@ -127,7 +127,7 @@ class GeoServerPublisher(QgsProcessingAlgorithm):
 
         username, password = self.get_credentials(parameters['GS_AUTH_ID'])
 
-        gs_catalogue = Catalog(parameters["GS_REST_URL"], username, password)
+        gs_catalogue = Catalog(parameters["GS_REST_URL"], username, password, validate_ssl_certificate=False)
 
         # workspace
         if wrk_name == "" or wrk_name is None:
